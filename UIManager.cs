@@ -26,9 +26,9 @@ namespace tui_generator
             foreach (KeyValuePair<char,ArrayList> identifier in identifiers) {
                 Console.WriteLine(identifier.Key);
                 if(!(identifier.Value.Count > 0)){
-                    identifiers[identifier.Key].Add("spacer");
+                    identifiers[identifier.Key].Add("spacer"); // Don't allow empty arraylists
                 }
-                panels.Add(identifier.Key, new Panel());
+                panels.Add(identifier.Key, new Panel(identifier.Value));
             }
 
             
@@ -54,13 +54,13 @@ namespace tui_generator
                 }
             }
 
-            Console.Clear();
-            foreach (KeyValuePair<char,Panel> panel in panels)
+            foreach (KeyValuePair<char, Panel> panel in panels)
             {
-                foreach (Cell cell in panel.Value.cells)
-                {
-                    Console.WriteLine($"Cell {cell.matrixX},{cell.matrixY} is of dimensions {cell.Width}:{cell.Height} and section {((char[])matrix[cell.matrixY])[cell.matrixX]}");
-                }
+                panel.Value.Draw();
+                // foreach (Cell cell in panel.Value.cells)
+                // {
+                //     Console.WriteLine($"Cell {cell.matrixX},{cell.matrixY} is of dimensions {cell.Width}:{cell.Height} and section {((char[])matrix[cell.matrixY])[cell.matrixX]}");
+                // }
             }
             
             // for (int y = 0; y < screenHeight; y++)
