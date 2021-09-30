@@ -1,18 +1,13 @@
 :LAYOUT
-0 1 1 1
-0 1 1 1
-2 2 2 2
-0 1 2 2
+0 0 0 0
+0 1 1 0
+0 1 1 0
+0 0 0 0
 
 :0
-A
+TITLE
 BUTTON
 
 :1
-B
 SPACER
-TEXT
-
-:2
-C
 TEXT

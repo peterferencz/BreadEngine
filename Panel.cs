@@ -19,8 +19,6 @@ namespace tui_generator
             int ScreenWidth = Console.WindowWidth;
             int ScreenHeight = Console.WindowHeight;
             foreach (Cell cell in cells) {
-                
-                
                 for (int x = 0; x < cell.Width; x++) {
                     for (int y = 0; y < cell.Height; y++) {
                         Console.SetCursorPosition((cell.Width * cell.matrixX) + x, (cell.Height * cell.matrixY) + y);
@@ -32,7 +30,7 @@ namespace tui_generator
                         t = isOurCell(cell.matrixX, cell.matrixY-1);
                         b = isOurCell(cell.matrixX, cell.matrixY+1);
 
-                        if(x == 0 || x == cell.Width-1 || y == 0 || y == cell.Height-1){
+                        //if(x == 0 || x == cell.Width-1 || y == 0 || y == cell.Height-1){
                             if (!t && !l && x == 0 && y == 0) {
                                 toWrite = '┌';
                             } else if(!t && !r && x == cell.Width-1 && y == 0) {
@@ -51,9 +49,9 @@ namespace tui_generator
                             Console.ForegroundColor = ConsoleColor.Blue;
                             Console.Write(toWrite);
                             Console.ForegroundColor = ConsoleColor.White;
-                        } else{
-                            Console.Write( ' ' );
-                        }
+                        // } else{
+                        //     Console.Write( ' ' );
+                        // }
 
                     }
                 }
