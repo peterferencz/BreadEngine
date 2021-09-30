@@ -25,6 +25,10 @@ namespace tui_generator
             Dictionary<char,int> identifierLine = new Dictionary<char, int>();
             foreach (KeyValuePair<char,ArrayList> identifier in identifiers) {
                 identifierLine.Add(identifier.Key, 0);
+                Console.WriteLine(identifier.Key);
+                if(!(identifier.Value.Count > 0)){
+                    identifiers[identifier.Key].Add("spacer");
+                }
             }
             
             int matrixHeight = matrix.Count;            
@@ -39,8 +43,12 @@ namespace tui_generator
             Console.Clear();
             Console.SetCursorPosition(0,0);
 
+            
+            
             for (int y = 0; y < screenHeight; y++)
             {
+                char prevSection = '\0';
+                int xIndex = 0;
                 for (int x = 0; x < screenWidth; x++)
                 {
                     bool l,r,t,b;
@@ -66,11 +74,17 @@ namespace tui_generator
                     } else{
                         //Emty space
                         //inside of panel 'current'
+                        if(prevSection != current){
+                            //Start of new Section
+                            prevSection = current;
+                            xIndex = 0;
+                        }
                         
                         
-                        /*toWrite = ((string)(identifiers[current][identifierLine[current]]))[0];
-                        identifierLine[current] = identifierLine[current] + 1;*/
+                        toWrite = ((string)(identifiers[current] [identifierLine[current]]))[0];
+                        identifierLine[current] = identifierLine[current] + 1;
                         
+                        xIndex++;
                         //toWrite = GetSectorFromPixel(x,y);
                     }
 
