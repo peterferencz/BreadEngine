@@ -24,21 +24,51 @@ namespace tui_generator
                 for (int x = 0; x < cell.Width; x++) {
                     for (int y = 0; y < cell.Height; y++) {
                         Console.SetCursorPosition((cell.Width * cell.matrixX) + x, (cell.Height * cell.matrixY) + y);
-                        Console.Write( ((string)objects[0])[0] );
+                        char toWrite = ((string)objects[0])[0];
+                        
+                        bool l,r,t,b;
+                        l = isOurCell(cell.matrixX-1, cell.matrixY);
+                        r = isOurCell(cell.matrixX+1, cell.matrixY);
+                        t = isOurCell(cell.matrixX, cell.matrixY-1);
+                        b = isOurCell(cell.matrixX, cell.matrixY+1);
+
+                        if(x == 0 || x == cell.Width-1 || y == 0 || y == cell.Height-1){
+                            if (!t && !l && x == 0 && y == 0) {
+                                toWrite = '┌';
+                            } else if(!t && !r && x == cell.Width-1 && y == 0) {
+                                toWrite = '┐';
+                            } else if(!l && !b && x == 0 && y == cell.Height-1) {
+                                toWrite = '└';
+                            } else if(!r && !b && x == cell.Width-1 && y == cell.Height-1) {
+                                toWrite = '┘';
+                            } else if((x == 0 && !l) || (x == cell.Width-1 && !r)) {
+                                toWrite = '│';
+                            } else if((y == 0 && !t) || (y == cell.Height-1 && !b)) {
+                                toWrite = '─';
+                            } else{
+                                toWrite = ' ';
+                            }
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                            Console.Write(toWrite);
+                            Console.ForegroundColor = ConsoleColor.White;
+                        } else{
+                            Console.Write( ' ' );
+                        }
+
                     }
                 }
             }
-            foreach (ArrayList arr in cellsVerticalMatrix){
-                string s = "[ ";
-                foreach (Cell c in arr) {
-                    s += $"({c.matrixX},{c.matrixY}), ";
+        }
+
+        // This function returns weather we own a
+        // cell given it's coordinates in the matrix
+        public bool isOurCell(int x, int y){
+            foreach (Cell cell in cells) {
+                if(cell.matrixX == x && cell.matrixY == y){
+                    return true;
                 }
-                s += "]";
-                Console.WriteLine(s);
             }
-            {
-                
-            }
+            return false;
         }
 
         // [][][][]

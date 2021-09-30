@@ -54,6 +54,7 @@ namespace tui_generator
                 }
             }
 
+            Console.Clear();
             foreach (KeyValuePair<char, Panel> panel in panels)
             {
                 panel.Value.Draw();
