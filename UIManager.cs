@@ -25,7 +25,7 @@ namespace tui_generator {
                 if(!(identifier.Value.Count > 0)){
                     identifiers[identifier.Key].Add("spacer"); // Don't allow empty arraylists
                 }
-                panels.Add(identifier.Key, new Panel(identifier.Value));
+                panels.Add(identifier.Key, new Panel(identifier.Value, identifiers.Count));
             }
 
             
@@ -49,74 +49,11 @@ namespace tui_generator {
                 }
             }
 
-            Console.Clear();
             foreach (KeyValuePair<char, Panel> panel in panels)
             {
                 panel.Value.Draw();
-                // foreach (Cell cell in panel.Value.cells)
-                // {
-                //     Console.WriteLine($"Cell {cell.matrixX},{cell.matrixY} is of dimensions {cell.Width}:{cell.Height} and section {((char[])matrix[cell.matrixY])[cell.matrixX]}");
-                // }
             }
             
-            // for (int y = 0; y < screenHeight; y++)
-            // {
-            //     char prevSection = '\0';
-            //     int xIndex = 0;
-            //     for (int x = 0; x < screenWidth; x++)
-            //     {
-            //         bool l,r,t,b;
-            //         char current = GetSectorFromPixel(x,y);
-            //         l = (GetSectorFromPixel(x-1,y) != current);
-            //         r = (GetSectorFromPixel(x+1,y) != current);
-            //         b = (GetSectorFromPixel(x,y+1) != current);
-            //         t = (GetSectorFromPixel(x,y-1) != current);
-
-            //         char toWrite = ' ';
-            //         if(!t && !b && (l || r)){
-            //             toWrite = '│';
-            //         }else if(!l && !r && (t || b)){
-            //             toWrite = '─';
-            //         } else if(!b && r && !l && t){
-            //             toWrite = '┐';
-            //         } else if(!b && l && !r && t){
-            //             toWrite = '┌';
-            //         } else if(!t && !r && l && b){
-            //             toWrite = '└';
-            //         } else if(!t && !l && r && b){
-            //             toWrite = '┘';
-            //         } else{
-            //             //Emty space
-            //             //inside of panel 'current'
-            //             if(prevSection != current){
-            //                 //Start of new Section
-            //                 prevSection = current;
-            //                 xIndex = 0;
-            //             }
-                        
-                        
-            //             string s = (string)(identifiers[current] [identifierLine[current]]);
-            //             string currentObject = (string)identifiers[current][identifierLine[current]];
-            //             toWrite = s[xIndex];
-            //             //identifierLine[current] = identifierLine[current] + 1;
-                        
-            //             if(xIndex < s.Length-1){
-            //                 xIndex++;
-            //             }else{
-            //                 xIndex = 0;
-            //                 if(identifierLine[current] < identifiers[current].Count-1){
-            //                     identifierLine[current] = identifierLine[current] + 1;
-            //                 }else{
-            //                     toWrite = ' ';
-            //                 }
-            //             }
-
-            //             //toWrite = GetSectorFromPixel(x,y);
-            //         }
-
-            //         Console.Write(toWrite);
-            //     }
-            // }
             Console.SetCursorPosition(0,0);
             Console.Read();
         }
