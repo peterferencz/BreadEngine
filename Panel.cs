@@ -15,20 +15,28 @@ namespace tui_generator
             this.objects = objects;
         }
 
+        
+
+        bool firstDrawCall = true;
         public void Draw(){
+            if(firstDrawCall){
+                objects.Sort();
+                firstDrawCall = false;
+            }
+
             int ScreenWidth = Console.WindowWidth;
             int ScreenHeight = Console.WindowHeight;
-            foreach (Cell cell in cells) {
+            for (int i = 0; i < cells.Count; i++) {
+                Cell cell = (Cell)cells[i];
+                bool l,r,t,b;
+                l = isOurCell(cell.matrixX-1, cell.matrixY);
+                r = isOurCell(cell.matrixX+1, cell.matrixY);
+                t = isOurCell(cell.matrixX, cell.matrixY-1);
+                b = isOurCell(cell.matrixX, cell.matrixY+1);
                 for (int x = 0; x < cell.Width; x++) {
                     for (int y = 0; y < cell.Height; y++) {
                         Console.SetCursorPosition((cell.Width * cell.matrixX) + x, (cell.Height * cell.matrixY) + y);
                         char toWrite = ((string)objects[0])[0];
-                        
-                        bool l,r,t,b;
-                        l = isOurCell(cell.matrixX-1, cell.matrixY);
-                        r = isOurCell(cell.matrixX+1, cell.matrixY);
-                        t = isOurCell(cell.matrixX, cell.matrixY-1);
-                        b = isOurCell(cell.matrixX, cell.matrixY+1);
 
                         //if(x == 0 || x == cell.Width-1 || y == 0 || y == cell.Height-1){
                             if (!t && !l && x == 0 && y == 0) {
@@ -44,15 +52,11 @@ namespace tui_generator
                             } else if((y == 0 && !t) || (y == cell.Height-1 && !b)) {
                                 toWrite = '─';
                             } else{
-                                toWrite = ' ';
+                                Console.ForegroundColor = ConsoleColor.DarkGray;
+                                toWrite = i.ToString()[0];
                             }
-                            Console.ForegroundColor = ConsoleColor.Blue;
                             Console.Write(toWrite);
-                            Console.ForegroundColor = ConsoleColor.White;
-                        // } else{
-                        //     Console.Write( ' ' );
-                        // }
-
+                            Console.ResetColor();
                     }
                 }
             }

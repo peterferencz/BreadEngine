@@ -10,8 +10,14 @@ namespace tui_generator
         public Dictionary<char,ArrayList> identifiers;
     }
 
+
     public class FileReader
     {
+
+        /// This method reads a file, parses it
+        /// and returns the data in a special
+        /// struct. It also throws errors when
+        /// finding them
         public static ReadReturn Read(string path){
             try {
             using (var sr = new StreamReader(path)) {

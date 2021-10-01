@@ -2,11 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace tui_generator
-{
-
-    public class UIManager
-    {
+namespace tui_generator {
+    public class UIManager {
         
         // !IMPORTANT!
         // Due to file reading from top to bottom
@@ -14,8 +11,8 @@ namespace tui_generator
         // so top is actually y-1
 
         private static ArrayList matrix;
-        private static Dictionary<char,ArrayList> identifiers;
-        private static Dictionary<char,Panel> panels = new Dictionary<char, Panel>();
+        private static Dictionary<char, ArrayList> identifiers;
+        private static Dictionary<char, Panel> panels = new Dictionary<char, Panel>();
 
         public static void Loop(ReadReturn data){
             matrix = data.matrix;
@@ -23,7 +20,7 @@ namespace tui_generator
             Console.Clear();
             Console.SetCursorPosition(0,0);
 
-            foreach (KeyValuePair<char,ArrayList> identifier in identifiers) {
+            foreach (KeyValuePair<char, ArrayList> identifier in identifiers) {
                 Console.WriteLine(identifier.Key);
                 if(!(identifier.Value.Count > 0)){
                     identifiers[identifier.Key].Add("spacer"); // Don't allow empty arraylists
@@ -40,8 +37,6 @@ namespace tui_generator
 
             int sectionWidth = screenWidth / matrixWidth;
             int sectionHeight = screenHeight / matrixHeight;
-
-            Console.WriteLine($"Width: {matrixWidth} Height: {matrixHeight}");
 
             for (int x = 0; x < matrixWidth; x++) {
                 for (int y = 0; y < matrixHeight; y++) {
