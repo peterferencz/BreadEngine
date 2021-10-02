@@ -92,9 +92,11 @@ namespace tui_generator
                                     string objString = component.textRepresentation;
                                     Console.ForegroundColor = component.foreground;
                                     Console.BackgroundColor = component.background;
+                                    objString = new String(component.Draw(cell.Width * currentRow.Count - 3));
+                                    
+                                    #region Drawing of string onto the screen
                                     if(textIndex >= objString.Length){
                                         //If textIndex out of range
-
                                         if(cell.Equals(lastCell) && x == cell.Width-2){
                                             //Last char of line
                                             if (textIndex < objString.Length) {
@@ -113,6 +115,7 @@ namespace tui_generator
                                         toWrite = objString[textIndex];
                                         textIndex++;
                                     }
+                                    #endregion
                                 }
                             }
 

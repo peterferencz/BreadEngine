@@ -86,6 +86,8 @@ namespace tui_generator
                                     identifiers[currentIdentifier].Add(new Button(getParameter(line, lineCounter)));
                             }else if(line.StartsWith("spacer")){
                                     identifiers[currentIdentifier].Add(new Spacer());
+                            }else if(line.StartsWith("loader")){
+                                    identifiers[currentIdentifier].Add(new LoadBar());
                             }else{
                                 ThrowError($"Unrecognized component on line {lineCounter}");
                             }

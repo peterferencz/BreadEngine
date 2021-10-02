@@ -1,7 +1,11 @@
 :LAYOUT
 0 1 1 1
 0 1 1 1
+0 1 1 1
+0 1 1 1
 0 2 2 2
+0 2 2 2
+3 3 3 3
 
 :0
 TEXT(Lol)
@@ -15,7 +19,15 @@ TEXT(These are other buttons🍞)
 BUTTON(Another bunch of buttons)
 BUTTON(Another bunch of buttons)
 BUTTON(Another bunch of buttons)
+SPACER
+SPACER
+TEXT(This is a loader bar)
+LOADER
+TEXT(Really sick 😎)
 
 :1
 TEXT(SOMEREALLYLONGASSTEXTThATCANNOTFITINONEPANELWIDTHSOITWILLGETSLICED)
 TEXT(Test)
+
+:2
+LOADER

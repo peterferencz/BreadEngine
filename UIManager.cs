@@ -21,8 +21,7 @@ namespace tui_generator {
             Console.SetCursorPosition(0,0);
 
             foreach (KeyValuePair<char, ArrayList> identifier in identifiers) {
-                Console.WriteLine(identifier.Key);
-                panels.Add(identifier.Key, new Panel(identifier.Value, identifiers.Count));
+                panels.Add(identifier.Key, new Panel(identifier.Value, identifiers.Count)); //(TODO) FIXME error here ---------------------------------
             }
 
             
