@@ -10,9 +10,12 @@ namespace tui_generator {
             Console.CursorVisible = false;
 
             ReadReturn ret = FileReader.Read(".Layout");
-            Console.WriteLine("Heh1");
-            UIManager.Loop(ret);
+            UIManager.StartLoop(ret);
             
+            
+            Console.WriteLine("Program Stopped execution");
+            Console.Read();
+            Console.Clear();
         }
     }
 }

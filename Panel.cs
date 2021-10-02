@@ -8,7 +8,9 @@ namespace tui_generator
     {
         public ArrayList cells = new ArrayList();
         private ArrayList components = new ArrayList();
-        public ArrayList cellsVerticalMatrix = new ArrayList();
+        private ArrayList cellsVerticalMatrix = new ArrayList();
+
+        public ConsoleColor borderColor = ConsoleColor.White;
 
         private int panelCount;
         public Panel(ArrayList components, int panelCount){
@@ -68,6 +70,7 @@ namespace tui_generator
                         for (int x = 0; x < cell.Width; x++) {
                             char toWrite = '*';
 
+                            Console.ForegroundColor = borderColor;
                             if (!t && !l && x == 0 && y == 0) {
                                 toWrite = '┌';
                             } else if(!t && !r && x == cell.Width-1 && y == 0) {
@@ -81,11 +84,14 @@ namespace tui_generator
                             } else if((y == 0 && !t) || (y == cell.Height-1 && !b)) {
                                 toWrite = '─';
                             } else{
-                                Console.ForegroundColor = ConsoleColor.DarkGray;
+                                Console.ForegroundColor = ConsoleColor.White;
                                 if(objectIndex >= components.Count){
                                     toWrite = ' ';
                                 }else{
-                                    string objString = ((Component)components[objectIndex]).textRepresentation;
+                                    Component component = (Component)components[objectIndex];
+                                    string objString = component.textRepresentation;
+                                    Console.ForegroundColor = component.foreground;
+                                    Console.BackgroundColor = component.background;
                                     if(textIndex >= objString.Length){
                                         //If textIndex out of range
 
@@ -117,80 +123,6 @@ namespace tui_generator
                     }
                 }
             }
-
-
-            // for (int rowCount = 0; rowCount < cellsVerticalMatrix.Count; rowCount++) {
-            //     for (int cellIndex = 0; cellIndex < ((ArrayList)cellsVerticalMatrix[rowCount]).Count; cellIndex++) {
-                    
-                    
-            //         Cell cell = (Cell)((ArrayList)cellsVerticalMatrix[rowCount])[cellIndex];
-            //         bool l,r,t,b;
-            //         l = isOurCell(cell.matrixX-1, cell.matrixY);
-            //         r = isOurCell(cell.matrixX+1, cell.matrixY);
-            //         t = isOurCell(cell.matrixX, cell.matrixY-1);
-            //         b = isOurCell(cell.matrixX, cell.matrixY+1);
-            //         for (int x = 0; x < cell.Width; x++) {
-            //             for (int y = 0; y < cell.Height; y++) {
-            //                 char toWrite = ((string)objects[0])[0];
-
-            //                 if (!t && !l && x == 0 && y == 0) {
-            //                     toWrite = '┌';
-            //                 } else if(!t && !r && x == cell.Width-1 && y == 0) {
-            //                     toWrite = '┐';
-            //                 } else if(!l && !b && x == 0 && y == cell.Height-1) {
-            //                     toWrite = '└';
-            //                 } else if(!r && !b && x == cell.Width-1 && y == cell.Height-1) {
-            //                     toWrite = '┘';
-            //                 } else if((x == 0 && !l) || (x == cell.Width-1 && !r)) {
-            //                     toWrite = '│';
-            //                 } else if((y == 0 && !t) || (y == cell.Height-1 && !b)) {
-            //                     toWrite = '─';
-            //                 } else{
-            //                     Console.ForegroundColor = ConsoleColor.DarkGray;
-            //                     toWrite = (rowCount+x).ToString()[0];
-            //                 }
-            //                 Console.SetCursorPosition((cell.Width * cell.matrixX) + x, (cell.Height * cell.matrixY) + y);
-            //                 Console.Write(toWrite);
-            //                 Console.ResetColor();
-            //             }
-            //         }
-            //     }
-            // }
-
-            // for (int i = 0; i < cells.Count; i++) {
-            //     Cell cell = (Cell)cells[i];
-            //     bool l,r,t,b;
-            //     l = isOurCell(cell.matrixX-1, cell.matrixY);
-            //     r = isOurCell(cell.matrixX+1, cell.matrixY);
-            //     t = isOurCell(cell.matrixX, cell.matrixY-1);
-            //     b = isOurCell(cell.matrixX, cell.matrixY+1);
-            //     for (int x = 0; x < cell.Width; x++) {
-            //         for (int y = 0; y < cell.Height; y++) {
-            //             Console.SetCursorPosition((cell.Width * cell.matrixX) + x, (cell.Height * cell.matrixY) + y);
-            //             char toWrite = ((string)objects[0])[0];
-
-            //             //if(x == 0 || x == cell.Width-1 || y == 0 || y == cell.Height-1){
-            //                 if (!t && !l && x == 0 && y == 0) {
-            //                     toWrite = '┌';
-            //                 } else if(!t && !r && x == cell.Width-1 && y == 0) {
-            //                     toWrite = '┐';
-            //                 } else if(!l && !b && x == 0 && y == cell.Height-1) {
-            //                     toWrite = '└';
-            //                 } else if(!r && !b && x == cell.Width-1 && y == cell.Height-1) {
-            //                     toWrite = '┘';
-            //                 } else if((x == 0 && !l) || (x == cell.Width-1 && !r)) {
-            //                     toWrite = '│';
-            //                 } else if((y == 0 && !t) || (y == cell.Height-1 && !b)) {
-            //                     toWrite = '─';
-            //                 } else{
-            //                     Console.ForegroundColor = ConsoleColor.DarkGray;
-            //                     toWrite = i.ToString()[0];
-            //                 }
-            //                 Console.Write(toWrite);
-            //                 Console.ResetColor();
-            //         }
-            //     }
-            // }
         }
 
         // This function returns weather we own a

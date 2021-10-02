@@ -11,7 +11,7 @@ BUTTON(Test button 2)
 BUTTON(Test button 3)
 BUTTON(Test button 4)
 SPACER
-TEXT(These are other buttons)
+TEXT(These are other buttons🍞)
 BUTTON(Another bunch of buttons)
 BUTTON(Another bunch of buttons)
 BUTTON(Another bunch of buttons)

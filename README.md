@@ -1,4 +1,4 @@
-# BreadEngine
+# 🍞 BreadEngine 🍞
 A terminal-ui engine
 
 ! This project is a work in progress !

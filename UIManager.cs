@@ -14,7 +14,7 @@ namespace tui_generator {
         private static Dictionary<char, ArrayList> identifiers;
         private static Dictionary<char, Panel> panels = new Dictionary<char, Panel>();
 
-        public static void Loop(ReadReturn data){
+        public static void StartLoop(ReadReturn data){
             matrix = data.matrix;
             identifiers = data.identifiers;
             Console.Clear();
