@@ -22,9 +22,6 @@ namespace tui_generator {
 
             foreach (KeyValuePair<char, ArrayList> identifier in identifiers) {
                 Console.WriteLine(identifier.Key);
-                if(!(identifier.Value.Count > 0)){
-                    identifiers[identifier.Key].Add("spacer"); // Don't allow empty arraylists
-                }
                 panels.Add(identifier.Key, new Panel(identifier.Value, identifiers.Count));
             }
 
@@ -49,8 +46,7 @@ namespace tui_generator {
                 }
             }
 
-            foreach (KeyValuePair<char, Panel> panel in panels)
-            {
+            foreach (KeyValuePair<char, Panel> panel in panels) {
                 panel.Value.Draw();
             }
             

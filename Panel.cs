@@ -7,14 +7,18 @@ namespace tui_generator
     public class Panel
     {
         public ArrayList cells = new ArrayList();
-
-        private ArrayList objects = new ArrayList();
+        private ArrayList components = new ArrayList();
         public ArrayList cellsVerticalMatrix = new ArrayList();
 
         private int panelCount;
-        public Panel(ArrayList objects, int panelCount){
-            this.objects = objects;
+        public Panel(ArrayList components, int panelCount){
+            this.components = components;
             this.panelCount = panelCount;
+
+            //To prevent being empty and throwing errors
+            if(components.Count == 0){
+                components.Add(new Spacer());
+            }
         }
 
         
@@ -78,10 +82,10 @@ namespace tui_generator
                                 toWrite = '─';
                             } else{
                                 Console.ForegroundColor = ConsoleColor.DarkGray;
-                                if(objectIndex >= objects.Count){
+                                if(objectIndex >= components.Count){
                                     toWrite = ' ';
                                 }else{
-                                    string objString = (string)objects[objectIndex];
+                                    string objString = ((Component)components[objectIndex]).textRepresentation;
                                     if(textIndex >= objString.Length){
                                         //If textIndex out of range
 
