@@ -89,10 +89,9 @@ namespace tui_generator
                                     toWrite = ' ';
                                 }else{
                                     Component component = (Component)components[objectIndex];
-                                    string objString = component.textRepresentation;
+                                    string objString = new String(component.Draw(cell.Width * currentRow.Count - 2));
                                     Console.ForegroundColor = component.foreground;
                                     Console.BackgroundColor = component.background;
-                                    objString = new String(component.Draw(cell.Width * currentRow.Count - 3));
                                     
                                     #region Drawing of string onto the screen
                                     if(textIndex >= objString.Length){
@@ -106,19 +105,27 @@ namespace tui_generator
                                                 textIndex = 0;
                                                 objectIndex++;
                                             }
+                                            Console.BackgroundColor = ConsoleColor.Red;
                                             toWrite = ' ';
                                         }else{
+                                            Console.BackgroundColor = ConsoleColor.Blue;
                                             toWrite = ' ';
                                         }
                                     }else{
                                         //Textindex is not out of range
-                                        toWrite = objString[textIndex];
-                                        textIndex++;
+                                        if(textIndex == objString.Length-1 && cell.Equals(lastCell) && x == cell.Width-2){
+                                                Console.BackgroundColor = ConsoleColor.Green;
+                                                toWrite = objString[textIndex];
+                                                textIndex = 0;
+                                                objectIndex++;
+                                        }else{
+                                            toWrite = objString[textIndex];
+                                            textIndex++;
+                                        }
                                     }
                                     #endregion
                                 }
                             }
-
                             Console.SetCursorPosition((cell.Width * cell.matrixX) + x, (cell.Height * cell.matrixY) + y);
                             Console.Write(toWrite);
                             Console.ResetColor();
@@ -155,6 +162,11 @@ namespace tui_generator
             }else{
                 return false;
             }
+        }
+
+        //Put this here so that the warning goes away
+        public override int GetHashCode() {
+            return HashCode.Combine(Width, Height, matrixX, matrixY);
         }
     }
 }

@@ -1,13 +1,15 @@
 using System;
+using System.Text;
+using System.Linq;
 
 namespace tui_generator
 {
     public class Component {
         
-        public string textRepresentation{get;set;}
+        public string textRepresentation = "Default component";
 
-        public ConsoleColor foreground{get;set;}
-        public ConsoleColor background{get;set;}
+        public ConsoleColor foreground = ConsoleColor.White;
+        public ConsoleColor background = ConsoleColor.Black;
 
         public virtual char[] Draw(int width){
             char[] toReturn = new char[textRepresentation.Length];
@@ -28,8 +30,20 @@ namespace tui_generator
         
     }
 
-    public class Spacer : Text{
-        public Spacer(): base(text:""){ }
+    public class Spacer : Component{
+        string spacer;
+
+        public Spacer(string spaceWith = " ") {
+            spacer = spaceWith;
+        }
+
+        public override char[] Draw(int width) {
+            char[] toReturn = new char[width];
+            for (int i = 0; i < width; i++) {
+                toReturn[i] = spacer[i%spacer.Length];
+            }
+            return toReturn;
+        }
     }
 
     public class Button : Component {

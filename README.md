@@ -16,12 +16,13 @@ already in place, buttons and nput fields already working
 1 1 1 1 2
 
 :0
-TITLE
-BUTTON
+TEXT(Some text inside of a textcomponent)
+BUTTON(You can click me)
 
 :1
+TEXT(Spacers are cool)
 SPACER
-TEXT
+TEXT(They seperate text)
 ```
 
 Feel free to message me with ideas, or commit a pull request

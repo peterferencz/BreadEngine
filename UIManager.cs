@@ -21,7 +21,7 @@ namespace tui_generator {
             Console.SetCursorPosition(0,0);
 
             foreach (KeyValuePair<char, ArrayList> identifier in identifiers) {
-                panels.Add(identifier.Key, new Panel(identifier.Value, identifiers.Count)); //(TODO) FIXME error here ---------------------------------
+                panels.Add(identifier.Key, new Panel(identifier.Value, matrix.Count)); //(TODO) FIXME error here ---------------------------------
             }
 
             
@@ -34,6 +34,10 @@ namespace tui_generator {
             int sectionWidth = screenWidth / matrixWidth;
             int sectionHeight = screenHeight / matrixHeight;
 
+            int paddingY = screenHeight - matrixHeight * sectionHeight;
+            //Console.WriteLine($"screenHeight: {screenHeight}, sectionHeight: {sectionHeight}, paddingY: {paddingY}, matrixHeight: {matrixHeight}");
+            //Environment.Exit(0);
+
             for (int x = 0; x < matrixWidth; x++) {
                 for (int y = 0; y < matrixHeight; y++) {
                     panels[  ((char[])matrix[y])[x]  ].cells.Add(new Cell(){
@@ -45,6 +49,7 @@ namespace tui_generator {
                 }
             }
 
+            Console.Clear();
             foreach (KeyValuePair<char, Panel> panel in panels) {
                 panel.Value.Draw();
             }

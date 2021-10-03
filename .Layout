@@ -1,11 +1,11 @@
 :LAYOUT
-0 1 1 1
-0 1 1 1
-0 1 1 1
-0 1 1 1
-0 2 2 2
-0 2 2 2
-3 3 3 3
+0 1 1 1 4 4 5
+0 2 2 2 4 4 5
+0 2 2 2 4 4 5
+0 2 2 2 4 4 5
+0 2 2 2 4 4 5
+0 3 3 3 4 4 5
+0 3 3 3 4 4 5
 
 :0
 TEXT(Lol)
@@ -15,15 +15,15 @@ BUTTON(Test button 2)
 BUTTON(Test button 3)
 BUTTON(Test button 4)
 SPACER
-TEXT(These are other buttons🍞)
+TEXT(These are other buttons)
 BUTTON(Another bunch of buttons)
 BUTTON(Another bunch of buttons)
 BUTTON(Another bunch of buttons)
 SPACER
-SPACER
+SPACER(-[]-)
 TEXT(This is a loader bar)
 LOADER
-TEXT(Really sick 😎)
+TEXT(Really sick)
 
 :1
 TEXT(SOMEREALLYLONGASSTEXTThATCANNOTFITINONEPANELWIDTHSOITWILLGETSLICED)

@@ -83,11 +83,15 @@ namespace tui_generator
                             if(line.StartsWith("text")){
                                 identifiers[currentIdentifier].Add(new Text(getParameter(line, lineCounter)));
                             }else if(line.StartsWith("button")){
-                                    identifiers[currentIdentifier].Add(new Button(getParameter(line, lineCounter)));
+                                identifiers[currentIdentifier].Add(new Button(getParameter(line, lineCounter)));
                             }else if(line.StartsWith("spacer")){
+                                if(line.Length > 6 && line[6] == '('){
+                                    identifiers[currentIdentifier].Add(new Spacer(getParameter(line,lineCounter)));
+                                }else{
                                     identifiers[currentIdentifier].Add(new Spacer());
+                                }
                             }else if(line.StartsWith("loader")){
-                                    identifiers[currentIdentifier].Add(new LoadBar());
+                                identifiers[currentIdentifier].Add(new LoadBar());
                             }else{
                                 ThrowError($"Unrecognized component on line {lineCounter}");
                             }
@@ -143,7 +147,11 @@ namespace tui_generator
                 ThrowError($"Missing Closing bracket on line {lineCount}");
                 return "";
             }else{
-                return line.Substring(from+1, to - from-1);
+                string toReturn = line.Substring(from+1, to - from-1);
+                if(toReturn.Length == 0){
+                    ThrowError($"Empty parameter on line {lineCount}");
+                }
+                return toReturn;
             }
         }
 
