@@ -84,7 +84,7 @@ namespace tui_generator
                             } else if((y == 0 && !t) || (y == cell.Height-1 && !b)) {
                                 toWrite = '─';
                             } else{
-                                Console.ForegroundColor = ConsoleColor.White;
+                                Console.ResetColor();
                                 if(objectIndex >= components.Count){
                                     toWrite = ' ';
                                 }else{
@@ -105,16 +105,13 @@ namespace tui_generator
                                                 textIndex = 0;
                                                 objectIndex++;
                                             }
-                                            Console.BackgroundColor = ConsoleColor.Red;
                                             toWrite = ' ';
                                         }else{
-                                            Console.BackgroundColor = ConsoleColor.Blue;
                                             toWrite = ' ';
                                         }
                                     }else{
                                         //Textindex is not out of range
                                         if(textIndex == objString.Length-1 && cell.Equals(lastCell) && x == cell.Width-2){
-                                                Console.BackgroundColor = ConsoleColor.Green;
                                                 toWrite = objString[textIndex];
                                                 textIndex = 0;
                                                 objectIndex++;

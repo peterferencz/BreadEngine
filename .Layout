@@ -1,33 +1,55 @@
 :LAYOUT
-0 1 1 1 4 4 5
-0 2 2 2 4 4 5
-0 2 2 2 4 4 5
-0 2 2 2 4 4 5
-0 2 2 2 4 4 5
-0 3 3 3 4 4 5
-0 3 3 3 4 4 5
+0 1 1 1 4 4
+0 1 1 1 4 4
+0 2 2 2 4 4
+0 2 2 2 4 4
+0 2 2 2 4 4
+0 3 3 3 4 4
+0 3 3 3 4 4
 
 :0
-TEXT(Lol)
-TEXT(SOMEREALLYLONGASSTEXTThATCANNOTFITINONEPANELWIDTHSOITWILLGETSLICED)
-BUTTON(Test button 1)
-BUTTON(Test button 2)
-BUTTON(Test button 3)
-BUTTON(Test button 4)
+SPACER(=)
+TEXT(This is an app created with BreadEngine)
+SPACER(=)
 SPACER
-TEXT(These are other buttons)
-BUTTON(Another bunch of buttons)
-BUTTON(Another bunch of buttons)
-BUTTON(Another bunch of buttons)
-SPACER
-SPACER(-[]-)
-TEXT(This is a loader bar)
-LOADER
-TEXT(Really sick)
+TEXT(This engine makes it super easy to create terminal ui-s. You Just simply define the layout in the .Layout file)
 
 :1
-TEXT(SOMEREALLYLONGASSTEXTThATCANNOTFITINONEPANELWIDTHSOITWILLGETSLICED)
-TEXT(Test)
+TEXT(Layout)
+TEXT(You start the layout with :LAYOUT)
+TEXT(After that, you define sections as single characters)
+TEXT(0 0 2 2)
+TEXT(0 0 2 2)
+TEXT(0 0 2 2)
+TEXT(1 1 1 1)
 
 :2
+TEXT(After that you can define components for the predefined sections)
+TEXT(Examples)
+TEXT(:12)
+TEXT(TEXT(Some text))
+TEXT(BUTTON(Text of the button))
+
+:3
+TEXT(Result: )
+TEXT(Some text)
+BUTTON(Text of the button)
+
+:4
+TEXT(List of components: )
+SPACER
+TEXT(Text:)
+TEXT(Lorem Ipsum dolor sit amet.)
+SPACER
+SPACER
+TEXT(Button:)
+BUTTON(Lorem Ipsum dolor sit amet.)
+SPACER
+SPACER
+TEXT(Spacer:)
+SPACER(-=-)
+SPACER
+SPACER
+TEXT(Loader:)
 LOADER
+SPACER
