@@ -36,6 +36,7 @@ namespace tui_generator {
 
             int paddingY = screenHeight - matrixHeight * sectionHeight;
 
+            //Filling up each panel with it's corresponding cells
             for (int x = 0; x < matrixWidth; x++) {
                 for (int y = 0; y < matrixHeight; y++) {
                     panels[  ((char[])matrix[y])[x]  ].cells.Add(new Cell() {
@@ -47,13 +48,15 @@ namespace tui_generator {
                 }
             }
 
-            Console.Clear();
-            foreach (KeyValuePair<char, Panel> panel in panels) {
-                panel.Value.Draw();
+            while (true) {
+                Console.Clear();
+                foreach (KeyValuePair<char, Panel> panel in panels) {
+                    panel.Value.Draw();
+                }
+
+                Console.SetCursorPosition(0,0);
+                Console.ReadKey();
             }
-            
-            Console.SetCursorPosition(0,0);
-            Console.Read();
         }
 
 

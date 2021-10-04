@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 
 namespace tui_generator
 {
@@ -10,7 +9,7 @@ namespace tui_generator
         private ArrayList components = new ArrayList();
         private ArrayList cellsVerticalMatrix = new ArrayList();
 
-        public ConsoleColor borderColor = ConsoleColor.White;
+        public ConsoleColor borderColor = ConsoleColor.DarkGray;
 
         private int panelCount;
         public Panel(ArrayList components, int panelCount){
@@ -69,6 +68,7 @@ namespace tui_generator
                 }
             }
             
+
             int objectIndex = 0;
             int textIndex = 0;
             for (int rowCount = 0; rowCount < cellsVerticalMatrix.Count; rowCount++) {
@@ -98,6 +98,7 @@ namespace tui_generator
                                 toWrite = '│';
                             } else if(y == 0 && !t) {
                                 if(hasTitle){
+                                    //Drawing titles
                                     if(x == 1) {
                                         //First char of title
                                         titlestring = new String(title.Draw(cell.Width * currentRow.Count - 2));
@@ -172,11 +173,6 @@ namespace tui_generator
             }
             return false;
         }
-
-        // [0] [1] [2]  [3]         [0,1]           0,1
-        // [4] [5] [6]  [7]         [4,5]
-        // [8] [9][10] [11]         [8,9]
-        // [12][13][14][15]         [12,13]
     }
 
     public struct Cell{

@@ -21,6 +21,7 @@ namespace tui_generator
             try {
             using (var sr = new StreamReader(path)) {
                 bool inLayout = false;
+                bool inNavigation = false;
                 int layoutWidth = -1;
                 char currentIdentifier = '\0';
                 ArrayList matrix = new ArrayList();
@@ -32,15 +33,22 @@ namespace tui_generator
                     string line = sr.ReadLine().Trim().ToLower();
                     if(String.IsNullOrWhiteSpace(line)) {
                         inLayout = false;
+                        inNavigation = false;
                         currentIdentifier = '\0';
                         continue;
                     }
 
                     if(line.StartsWith(":layout")) {
+                        inNavigation = false;
                         inLayout = true;
                         continue;
-                    } else if(line.StartsWith(":")) {
+                    } else if(line.StartsWith(":nav")) {
                         inLayout = false;
+                        inNavigation = true;
+                        continue;
+                    } else if(line.StartsWith(":")) {
+                        inLayout = false; //TODO error handling: multiple sections after
+                        inNavigation = false; // each other can cause wired effect
                         try {
                             char selector = Char.Parse(line.Substring(1));
                             if(!identifiers.ContainsKey(selector)) {
@@ -95,8 +103,20 @@ namespace tui_generator
                             } else {
                                 ThrowError($"Unrecognized component on line {lineCounter}");
                             }
+                        } else if(inNavigation){
+                            string[] lineSections = line.Split(' ');
+                            char[] navItems = new char[lineSections.Length];
+                            for (int i = 0; i < lineSections.Length; i++) {
+                                if(lineSections[i].Length > 1){
+                                    ThrowError($"Navigationcomponent must be of type char (line {lineCounter})");
+                                } else if(!identifiers.ContainsKey(lineSections[i][0])){
+                                    ThrowError($"No identifier resembles char '{lineSections[i][0]}'");
+                                } else {
+                                    navItems[i] = lineSections[i][0];
+                                }
+                            }
                         } else {
-                            ThrowError($"Invalid line '{line}' (line {lineCounter})");
+                            ThrowError($"Cannot understand line {lineCounter} ('{line}')");
                         }
                     }
                     

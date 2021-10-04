@@ -15,6 +15,9 @@ already in place, buttons and nput fields already working
 0 0 0 0 2
 1 1 1 1 2
 
+:NAV
+0 1 2 3 4
+
 :0
 TEXT(Some text inside of a textcomponent)
 BUTTON(You can click me)

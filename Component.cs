@@ -31,7 +31,7 @@ namespace tui_generator
     }
 
     public class Title : Component {
-        
+
         public Title(string text) {
             textRepresentation = text;
             foreground = ConsoleColor.White;
@@ -74,19 +74,19 @@ namespace tui_generator
     public class Button : Component {
         public Button(string text) {
             textRepresentation = text;
-            foreground = ConsoleColor.Black;
-            background = ConsoleColor.White;
+            foreground = ConsoleColor.Green;
         }
     }
 
+
+    //TODO a loader that writes it's value next to it
     public class LoadBar : Component {
 
         public int percent = 90;
 
         public LoadBar(){
             textRepresentation = "LoadBar";
-            foreground = ConsoleColor.Black;
-            background = ConsoleColor.White;
+            foreground = ConsoleColor.Blue;
         }
 
         public override char[] Draw(int width) {

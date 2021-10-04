@@ -7,6 +7,9 @@
 0 3 3 3 4 4
 0 3 3 3 4 4
 
+:NAV
+0 1 2 3 4
+
 :0
 SPACER(=)
 TEXT(This is an app created with BreadEngine)
