@@ -15,7 +15,7 @@ SPACER
 TEXT(This engine makes it super easy to create terminal ui-s. You Just simply define the layout in the .Layout file)
 
 :1
-TEXT(Layout)
+TITLE(Layout)
 TEXT(You start the layout with :LAYOUT)
 TEXT(After that, you define sections as single characters)
 TEXT(0 0 2 2)
@@ -31,13 +31,12 @@ TEXT(TEXT(Some text))
 TEXT(BUTTON(Text of the button))
 
 :3
-TEXT(Result: )
+TITLE(Result)
 TEXT(Some text)
 BUTTON(Text of the button)
 
 :4
-TEXT(List of components: )
-SPACER
+TITLE(List of components)
 TEXT(Text:)
 TEXT(Lorem Ipsum dolor sit amet.)
 SPACER

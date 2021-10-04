@@ -54,6 +54,21 @@ namespace tui_generator
             int ScreenWidth = Console.WindowWidth;
             int ScreenHeight = Console.WindowHeight;
 
+            //Handling of the title and removing it
+            //from the regular components arraylist
+            bool hasTitle = false;
+            string titlestring = "";
+            Component title = null;
+            int titleIndex = 0;
+            foreach (Component component in components) {
+                if(typeof(Title) == component.GetType()){
+                    hasTitle = true;
+                    title = component;
+                    components.Remove(component);
+                    break;
+                }
+            }
+            
             int objectIndex = 0;
             int textIndex = 0;
             for (int rowCount = 0; rowCount < cellsVerticalMatrix.Count; rowCount++) {
@@ -81,7 +96,22 @@ namespace tui_generator
                                 toWrite = '┘';
                             } else if((x == 0 && !l) || (x == cell.Width-1 && !r)) {
                                 toWrite = '│';
-                            } else if((y == 0 && !t) || (y == cell.Height-1 && !b)) {
+                            } else if(y == 0 && !t) {
+                                if(hasTitle){
+                                    if(x == 1) {
+                                        //First char of title
+                                        titlestring = new String(title.Draw(cell.Width * currentRow.Count - 2));
+                                    }
+                                    if(titleIndex >= titlestring.Length){
+                                        toWrite = '─';
+                                    }else{
+                                        toWrite = titlestring[titleIndex];
+                                        titleIndex++;
+                                    }
+                                }else{
+                                    toWrite = '─';
+                                }
+                            } else if(y == cell.Height-1 && !b) {
                                 toWrite = '─';
                             } else {
                                 Console.ResetColor();

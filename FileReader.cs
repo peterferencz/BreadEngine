@@ -82,6 +82,8 @@ namespace tui_generator
                                 identifiers[currentIdentifier].Add(new Text(getParameter(line, lineCounter)));
                             } else if(line.StartsWith("button")) {
                                 identifiers[currentIdentifier].Add(new Button(getParameter(line, lineCounter)));
+                            } else if(line.StartsWith("title")) { //TODO check for multiple titles
+                                identifiers[currentIdentifier].Add(new Title(getParameter(line, lineCounter)));
                             } else if(line.StartsWith("spacer")) {
                                 if(line.Length > 6 && line[6] == '('){
                                     identifiers[currentIdentifier].Add(new Spacer(getParameter(line,lineCounter)));

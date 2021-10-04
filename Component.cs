@@ -30,6 +30,31 @@ namespace tui_generator
         
     }
 
+    public class Title : Component {
+        
+        public Title(string text) {
+            textRepresentation = text;
+            foreground = ConsoleColor.White;
+            background = ConsoleColor.Black;
+        }
+        
+        public override char[] Draw(int width){
+            char[] toReturn = new char[width];
+            for (int i = 0; i < width; i++) {
+                if(i == 0){
+                    toReturn[i] = '─';
+                }else{
+                    if(i <= textRepresentation.Length){
+                        toReturn[i] = textRepresentation[i-1];
+                    } else {
+                        toReturn[i] = '─';
+                    }
+                }
+            }
+            return toReturn;
+        }
+    }
+
     public class Spacer : Component{
         string spacer;
 
