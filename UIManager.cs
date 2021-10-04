@@ -14,14 +14,14 @@ namespace tui_generator {
         private static Dictionary<char, ArrayList> identifiers;
         private static Dictionary<char, Panel> panels = new Dictionary<char, Panel>();
 
-        public static void StartLoop(ReadReturn data){
+        public static void StartLoop(ReadReturn data) {
             matrix = data.matrix;
             identifiers = data.identifiers;
             Console.Clear();
             Console.SetCursorPosition(0,0);
 
             foreach (KeyValuePair<char, ArrayList> identifier in identifiers) {
-                panels.Add(identifier.Key, new Panel(identifier.Value, matrix.Count)); //(TODO) FIXME error here ---------------------------------
+                panels.Add(identifier.Key, new Panel(identifier.Value, matrix.Count));
             }
 
             
@@ -35,12 +35,10 @@ namespace tui_generator {
             int sectionHeight = screenHeight / matrixHeight;
 
             int paddingY = screenHeight - matrixHeight * sectionHeight;
-            //Console.WriteLine($"screenHeight: {screenHeight}, sectionHeight: {sectionHeight}, paddingY: {paddingY}, matrixHeight: {matrixHeight}");
-            //Environment.Exit(0);
 
             for (int x = 0; x < matrixWidth; x++) {
                 for (int y = 0; y < matrixHeight; y++) {
-                    panels[  ((char[])matrix[y])[x]  ].cells.Add(new Cell(){
+                    panels[  ((char[])matrix[y])[x]  ].cells.Add(new Cell() {
                         matrixX = x,
                         matrixY = y,
                         Width = sectionWidth,
@@ -62,14 +60,14 @@ namespace tui_generator {
         // This method returns the sector
         // corresponding in the matrix
         // defined in the layout
-        static char getSectorFromMatrix(int x, int y){
+        static char getSectorFromMatrix(int x, int y) {
             return ((char[])matrix[y])[x];
         }
 
         /// This method returns the character representing
         /// the given panel inside the layout file given the
         /// screen x and y coordinates
-        static char GetSectorFromPixel(int x, int y){
+        static char GetSectorFromPixel(int x, int y) {
             int matrixHeight = matrix.Count;            
             int matrixWidth = ((char[])matrix[0]).Length;
             int screenWidth = Console.WindowWidth;

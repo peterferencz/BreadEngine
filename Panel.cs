@@ -83,11 +83,11 @@ namespace tui_generator
                                 toWrite = '│';
                             } else if((y == 0 && !t) || (y == cell.Height-1 && !b)) {
                                 toWrite = '─';
-                            } else{
+                            } else {
                                 Console.ResetColor();
-                                if(objectIndex >= components.Count){
+                                if(objectIndex >= components.Count) {
                                     toWrite = ' ';
-                                }else{
+                                } else {
                                     Component component = (Component)components[objectIndex];
                                     string objString = new String(component.Draw(cell.Width * currentRow.Count - 2));
                                     Console.ForegroundColor = component.foreground;
@@ -96,26 +96,26 @@ namespace tui_generator
                                     #region Drawing of string onto the screen
                                     if(textIndex >= objString.Length){
                                         //If textIndex out of range
-                                        if(cell.Equals(lastCell) && x == cell.Width-2){
+                                        if(cell.Equals(lastCell) && x == cell.Width-2) {
                                             //Last char of line
                                             if (textIndex < objString.Length) {
                                                 //Haven't finished string
-                                            }else{
+                                            } else {
                                                 //Finished string
                                                 textIndex = 0;
                                                 objectIndex++;
                                             }
                                             toWrite = ' ';
-                                        }else{
+                                        } else {
                                             toWrite = ' ';
                                         }
-                                    }else{
+                                    } else {
                                         //Textindex is not out of range
-                                        if(textIndex == objString.Length-1 && cell.Equals(lastCell) && x == cell.Width-2){
+                                        if(textIndex == objString.Length-1 && cell.Equals(lastCell) && x == cell.Width-2) {
                                                 toWrite = objString[textIndex];
                                                 textIndex = 0;
                                                 objectIndex++;
-                                        }else{
+                                        } else {
                                             toWrite = objString[textIndex];
                                             textIndex++;
                                         }
@@ -134,9 +134,9 @@ namespace tui_generator
 
         // This function returns weather we own a
         // cell given it's coordinates in the matrix
-        public bool isOurCell(int x, int y){
+        public bool isOurCell(int x, int y) {
             foreach (Cell cell in cells) {
-                if(cell.matrixX == x && cell.matrixY == y){
+                if(cell.matrixX == x && cell.matrixY == y) {
                     return true;
                 }
             }
@@ -153,10 +153,10 @@ namespace tui_generator
         public int Width, Height, matrixX, matrixY;
 
         public override bool Equals(object obj) {
-            if(obj.GetType() == this.GetType()){
+            if(obj.GetType() == this.GetType()) {
                 Cell other = (Cell)obj;
                 return (matrixX == other.matrixX) && (matrixY == other.matrixY);
-            }else{
+            } else {
                 return false;
             }
         }

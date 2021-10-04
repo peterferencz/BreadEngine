@@ -21,7 +21,7 @@ namespace tui_generator
     }
 
     public class Text : Component {
-        public Text(string text){
+        public Text(string text) {
             textRepresentation = text;
             foreground = ConsoleColor.White;
             background = ConsoleColor.Black;
@@ -47,7 +47,7 @@ namespace tui_generator
     }
 
     public class Button : Component {
-        public Button(string text){
+        public Button(string text) {
             textRepresentation = text;
             foreground = ConsoleColor.Black;
             background = ConsoleColor.White;
@@ -71,7 +71,7 @@ namespace tui_generator
                     toReturn[i] = '[';
                 } else if(i == width-1){
                     toReturn[i] = ']';
-                }else {
+                } else {
                     if(i < (width * percent / 100)) {
                         toReturn[i] = '=';
                     } else {

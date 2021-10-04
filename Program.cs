@@ -2,8 +2,7 @@
 
 namespace tui_generator {
     class Program {
-        static void Main(string[] args)
-        {
+        static void Main(string[] args) {
             Console.Clear();
             Console.SetCursorPosition(0,0);
             Console.OutputEncoding = System.Text.Encoding.Unicode;
