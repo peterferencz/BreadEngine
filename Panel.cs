@@ -9,7 +9,7 @@ namespace tui_generator
         private ArrayList components = new ArrayList();
         private ArrayList cellsVerticalMatrix = new ArrayList();
 
-        public ConsoleColor borderColor = ConsoleColor.DarkGray;
+        public ConsoleColor borderColor = ConsoleColor.White;
 
         private int panelCount;
         public Panel(ArrayList components, int panelCount){

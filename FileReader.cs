@@ -8,6 +8,8 @@ namespace tui_generator
     public struct ReadReturn {
         public ArrayList matrix;
         public Dictionary<char,ArrayList> identifiers;
+
+        public ArrayList naviagation;
     }
 
 
@@ -24,8 +26,10 @@ namespace tui_generator
                 bool inNavigation = false;
                 int layoutWidth = -1;
                 char currentIdentifier = '\0';
+                bool previousLineIsEmpty = false;
                 ArrayList matrix = new ArrayList();
                 Dictionary<char,ArrayList> identifiers = new Dictionary<char, ArrayList>();
+                ArrayList navigation = new ArrayList();
 
                 int lineCounter = 0;
                 while (sr.Peek() >= 0) {
@@ -35,28 +39,39 @@ namespace tui_generator
                         inLayout = false;
                         inNavigation = false;
                         currentIdentifier = '\0';
+                        previousLineIsEmpty = true;
                         continue;
                     }
 
-                    if(line.StartsWith(":layout")) {
+                    if(line == ":layout") {
+                        if(inNavigation){
+                            ThrowError($"Start of a new identifier should always be seperated with an empty line (line {lineCounter})");
+                        }
                         inNavigation = false;
                         inLayout = true;
                         continue;
-                    } else if(line.StartsWith(":nav")) {
+                    } else if(line == ":nav") {
+                        if(inLayout){
+                            ThrowError($"Start of a new identifier should always be seperated with an empty line (line {lineCounter})");
+                        }
                         inLayout = false;
                         inNavigation = true;
                         continue;
                     } else if(line.StartsWith(":")) {
+                        if(inLayout || inNavigation || !previousLineIsEmpty){
+                            ThrowError($"Start of a new identifier should always be seperated with an empty line (line {lineCounter})");
+                        }
                         inLayout = false; //TODO error handling: multiple sections after
                         inNavigation = false; // each other can cause wired effect
                         try {
                             char selector = Char.Parse(line.Substring(1));
                             if(!identifiers.ContainsKey(selector)) {
                                 ThrowError($"Identifier '{selector}' was not declared in layout (line {lineCounter})");
+                            } else if(identifiers[selector].Count != 0){
+                                ThrowError($"Identifier is defined on multiple occasions (line {lineCounter})");
                             }
                             currentIdentifier = selector;
-                        }
-                        catch (Exception) {
+                        } catch (Exception) {
                             ThrowError($"Identifier couldn't be parsed into a character (line {lineCounter})");
                         }
                         
@@ -105,22 +120,20 @@ namespace tui_generator
                             }
                         } else if(inNavigation){
                             string[] lineSections = line.Split(' ');
-                            char[] navItems = new char[lineSections.Length];
                             for (int i = 0; i < lineSections.Length; i++) {
                                 if(lineSections[i].Length > 1){
                                     ThrowError($"Navigationcomponent must be of type char (line {lineCounter})");
                                 } else if(!identifiers.ContainsKey(lineSections[i][0])){
                                     ThrowError($"No identifier resembles char '{lineSections[i][0]}'");
                                 } else {
-                                    navItems[i] = lineSections[i][0];
+                                    navigation.Add(lineSections[i][0]);
                                 }
                             }
                         } else {
                             ThrowError($"Cannot understand line {lineCounter} ('{line}')");
                         }
                     }
-                    
-                    Console.WriteLine(line);
+                    previousLineIsEmpty = false;
                 }
 
                 //TODO check if all regions aren't cut off
@@ -130,7 +143,8 @@ namespace tui_generator
 
                 return new ReadReturn() {
                     matrix = matrix,
-                    identifiers = identifiers
+                    identifiers = identifiers,
+                    naviagation = navigation
                 };
             }
             } catch (IOException e) {
