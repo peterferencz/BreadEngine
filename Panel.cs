@@ -8,8 +8,9 @@ namespace tui_generator
         public ArrayList cells = new ArrayList();
         private ArrayList components = new ArrayList();
         private ArrayList cellsVerticalMatrix = new ArrayList();
-
         public ConsoleColor borderColor = ConsoleColor.White;
+
+        public int selectedIndex = -1;
 
         private int panelCount;
         public Panel(ArrayList components, int panelCount){
@@ -122,7 +123,11 @@ namespace tui_generator
                                     Component component = (Component)components[objectIndex];
                                     string objString = new String(component.Draw(cell.Width * currentRow.Count - 2));
                                     Console.ForegroundColor = component.foreground;
-                                    Console.BackgroundColor = component.background;
+                                    if(selectedIndex == objectIndex){
+                                        Console.BackgroundColor = ConsoleColor.Blue;
+                                    }else{
+                                        Console.BackgroundColor = component.background;
+                                    }
                                     
                                     #region Drawing of string onto the screen
                                     if(textIndex >= objString.Length){
@@ -154,6 +159,7 @@ namespace tui_generator
                                     #endregion
                                 }
                             }
+                            
                             Console.SetCursorPosition((cell.Width * cell.matrixX) + x, (cell.Height * cell.matrixY) + y);
                             Console.Write(toWrite);
                             Console.ResetColor();
@@ -161,6 +167,18 @@ namespace tui_generator
                     }
                 }
             }
+        }
+
+        public bool OnKey(ConsoleKey key){
+            if(((Component)components[selectedIndex]).OnKey(key)){
+                //Go to next cmponent
+                if(++selectedIndex >= components.Count){
+                    //Run out of components
+                    selectedIndex = -1;
+                    return true;
+                }
+            }
+            return false;
         }
 
         // This function returns weather we own a

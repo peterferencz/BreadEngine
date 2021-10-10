@@ -18,6 +18,14 @@ namespace tui_generator
             }
             return toReturn;
         }
+
+        public bool OnKey(ConsoleKey key){
+            if(key == ConsoleKey.DownArrow || key == ConsoleKey.Tab){
+                return true;
+            }else{
+                return false;
+            }
+        }
     }
 
     public class Text : Component {

@@ -3,7 +3,7 @@
 0 1 1 1 4 4
 0 2 2 2 4 4
 0 2 2 2 4 4
-0 5 5 5 4 4
+0 2 2 2 4 4
 0 3 3 3 4 4
 0 3 3 3 4 4
 
@@ -30,7 +30,7 @@ TEXT(1 1 1 1)
 :2
 TEXT(After that you can define components for the predefined sections)
 TEXT(Examples)
-TEXT(:12)
+TEXT(:1)
 TEXT(TEXT(Some text))
 TEXT(BUTTON(Text of the button))
 

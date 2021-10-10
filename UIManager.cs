@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -13,12 +14,13 @@ namespace tui_generator {
         private static ArrayList matrix;
         private static Dictionary<char, ArrayList> identifiers;
         private static Dictionary<char, Panel> panels = new Dictionary<char, Panel>();
+        private static ArrayList navigation;
+        private static int selectedIndex = 0;
 
         public static void StartLoop(ReadReturn data) {
             matrix = data.matrix;
             identifiers = data.identifiers;
-            Console.Clear();
-            Console.SetCursorPosition(0,0);
+            navigation = data.naviagation;
 
             foreach (KeyValuePair<char, ArrayList> identifier in identifiers) {
                 panels.Add(identifier.Key, new Panel(identifier.Value, matrix.Count));
@@ -48,6 +50,8 @@ namespace tui_generator {
                 }
             }
 
+            //Set the first element
+            panels[(char)navigation[0]].selectedIndex = 0;
             while (true) {
                 Console.Clear();
                 foreach (KeyValuePair<char, Panel> panel in panels) {
@@ -55,7 +59,13 @@ namespace tui_generator {
                 }
 
                 Console.SetCursorPosition(0,0);
-                Console.ReadKey();
+                ConsoleKey key = Console.ReadKey().Key;
+                if(panels[(char)navigation[selectedIndex]].OnKey(key)){
+                    if(++selectedIndex >= navigation.Count){
+                        selectedIndex = 0;
+                    }
+                    panels[(char)navigation[selectedIndex]].selectedIndex = 0;
+                }
             }
         }
 
