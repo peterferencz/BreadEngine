@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace tui_generator {
+namespace BreadEngine {
     public class UIManager {
         
         // !IMPORTANT!
@@ -30,8 +30,8 @@ namespace tui_generator {
             
             int matrixHeight = matrix.Count;            
             int matrixWidth = ((char[])matrix[0]).Length;
-            int screenWidth = Console.WindowWidth;
-            int screenHeight = Console.WindowHeight;
+            int screenWidth = FastConsole.Width;
+            int screenHeight = FastConsole.Height;
 
             int sectionWidth = screenWidth / matrixWidth;
             int sectionHeight = screenHeight / matrixHeight;
@@ -53,13 +53,13 @@ namespace tui_generator {
             //Set the first element
             panels[(char)navigation[0]].selectedIndex = 0;
             while (true) {
-                Console.Clear();
+                FastConsole.Clear();
                 foreach (KeyValuePair<char, Panel> panel in panels) {
                     panel.Value.Draw();
                 }
+                FastConsole.Flush();
 
-                Console.SetCursorPosition(0,0);
-                ConsoleKey key = Console.ReadKey().Key;
+                ConsoleKey key = FastConsole.ReadKey().Key;
                 if(panels[(char)navigation[selectedIndex]].OnKey(key)){
                     if(++selectedIndex >= navigation.Count){
                         selectedIndex = 0;
@@ -83,8 +83,8 @@ namespace tui_generator {
         static char GetSectorFromPixel(int x, int y) {
             int matrixHeight = matrix.Count;            
             int matrixWidth = ((char[])matrix[0]).Length;
-            int screenWidth = Console.WindowWidth;
-            int screenHeight = Console.WindowHeight;
+            int screenWidth = FastConsole.Width;
+            int screenHeight = FastConsole.Height;
 
             int sectionWidth = screenWidth / matrixWidth;
             int sectionHeight = screenHeight / matrixHeight;

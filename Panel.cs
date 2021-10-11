@@ -1,10 +1,8 @@
 using System;
 using System.Collections;
 
-namespace tui_generator
-{
-    public class Panel
-    {
+namespace BreadEngine {
+    public class Panel {
         public ArrayList cells = new ArrayList();
         private ArrayList components = new ArrayList();
         private ArrayList cellsVerticalMatrix = new ArrayList();
@@ -51,8 +49,8 @@ namespace tui_generator
                 firstDrawCall = false;
             }
 
-            int ScreenWidth = Console.WindowWidth;
-            int ScreenHeight = Console.WindowHeight;
+            int ScreenWidth = FastConsole.Width;
+            int ScreenHeight = FastConsole.Height;
 
             //Handling of the title and removing it
             //from the regular components arraylist
@@ -160,8 +158,9 @@ namespace tui_generator
                                 }
                             }
                             
-                            Console.SetCursorPosition((cell.Width * cell.matrixX) + x, (cell.Height * cell.matrixY) + y);
-                            Console.Write(toWrite);
+                            FastConsole.SetCursor((cell.Width * cell.matrixX) + x, (cell.Height * cell.matrixY) + y);
+                            FastConsole.Write(toWrite);
+                            // FastConsole.Write(y.ToString()[0]);
                             Console.ResetColor();
                         }
                     }

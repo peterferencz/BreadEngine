@@ -3,8 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
-namespace tui_generator
-{
+namespace BreadEngine {
     public struct ReadReturn {
         public ArrayList matrix;
         public Dictionary<char,ArrayList> identifiers;
@@ -34,7 +33,7 @@ namespace tui_generator
                 int lineCounter = 0;
                 while (sr.Peek() >= 0) {
                     lineCounter++;
-                    string line = sr.ReadLine().Trim().ToLower();
+                    string line = sr.ReadLine().Trim().ToLower(); //TODO don't make all lowercase
                     if(String.IsNullOrWhiteSpace(line)) {
                         inLayout = false;
                         inNavigation = false;
@@ -178,9 +177,10 @@ namespace tui_generator
         //Stops execution and prompts to user
         public static void ThrowError(string message) {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("An error occured: ");
-            Console.WriteLine(message);
+            FastConsole.Write("An error occured: ");
+            FastConsole.Write(message);
             Console.ForegroundColor = ConsoleColor.White;
+            FastConsole.Flush();
             Environment.Exit(1);
         }
     }

@@ -1,20 +1,16 @@
-﻿using System;
-
-namespace tui_generator {
+﻿namespace BreadEngine {
     class Program {
         static void Main(string[] args) {
-            Console.Clear();
-            Console.SetCursorPosition(0,0);
-            Console.OutputEncoding = System.Text.Encoding.Unicode;
-            Console.CursorVisible = false;
+            FastConsole.Clear();
+            FastConsole.Flush();
 
             ReadReturn ret = FileReader.Read(".Layout");
             UIManager.StartLoop(ret);
             
             
-            Console.WriteLine("Program Stopped execution");
-            Console.Read();
-            Console.Clear();
+            FastConsole.Write("Program Stopped execution");
+            FastConsole.Flush();
+            FastConsole.ReadKey();
         }
     }
 }

@@ -2,8 +2,7 @@ using System;
 using System.Text;
 using System.Linq;
 
-namespace tui_generator
-{
+namespace BreadEngine {
     public class Component {
         
         public string textRepresentation = "Default component";
