@@ -160,7 +160,7 @@ namespace BreadEngine {
                             
                             FastConsole.SetCursor((cell.Width * cell.matrixX) + x, (cell.Height * cell.matrixY) + y);
                             FastConsole.Write(toWrite);
-                            // FastConsole.Write(y.ToString()[0]);
+                            // FastConsole.Write('*');
                             Console.ResetColor();
                         }
                     }

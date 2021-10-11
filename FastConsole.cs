@@ -25,12 +25,8 @@ namespace BreadEngine {
         }
 
         public static void SetCursor(int x, int y){
-            // SetCursor((y * Height) + x);
-            Console.SetCursorPosition(x,y);
-        }
-        
-        private static void SetCursor(int offset){
-            FastConsole.offset = offset;
+            FastConsole.offset = y * Width + x;
+            //Console.SetCursorPosition(x,y);
         }
 
 
@@ -47,22 +43,21 @@ namespace BreadEngine {
             //1,0 1,1 1,2 1,3   4 5 6 7
             //2,0 2,1 2,2 2,3   8 9 11 12
 
-            // buffer[offset++] = c;
-            Flush();
-            Console.Write(c);
+            buffer[offset++] = c;
+            //Console.Write(c);
             //
         }
 
         public static void Write(string s){
-            // for (int i = 0; i < s.Length; i++) {
-            //     buffer[offset++] = s[i];
-            // }
-            Console.Write(s);
+            for (int i = 0; i < s.Length; i++) {
+                buffer[offset++] = s[i];
+            }
+            //Console.Write(s);
         }
 
         public static void Clear(){
             buffer = Enumerable.Repeat('.', Width * Height).ToArray();
-            // offset = 0;
+            offset = 0;
             Console.Clear();
         }
 
@@ -71,9 +66,9 @@ namespace BreadEngine {
         }
 
         public static void Flush() {
-            // Console.SetCursorPosition(0,0);
-            // Console.Clear();
-            // Console.Write(new String(buffer));
+            Console.SetCursorPosition(0,0);
+            Console.Clear();
+            Console.Write(new String(buffer));
         }
     }
 }
