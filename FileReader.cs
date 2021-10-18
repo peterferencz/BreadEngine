@@ -114,6 +114,8 @@ namespace BreadEngine {
                                 }
                             } else if(line.StartsWith("loader")) {
                                 identifiers[currentIdentifier].Add(new LoadBar());
+                            } else if(line.StartsWith("slider")) {
+                                identifiers[currentIdentifier].Add(new Slider());
                             } else {
                                 ThrowError($"Unrecognized component on line {lineCounter}");
                             }
@@ -176,11 +178,12 @@ namespace BreadEngine {
 
         //Stops execution and prompts to user
         public static void ThrowError(string message) {
-            Console.ForegroundColor = ConsoleColor.Red;
+            FastConsole.SetForeground(ConsoleColor.Red);
             FastConsole.Write("An error occured: ");
             FastConsole.Write(message);
-            Console.ForegroundColor = ConsoleColor.White;
+            FastConsole.SetForeground(ConsoleColor.White);
             FastConsole.Flush();
+            Console.SetCursorPosition(0,1);
             Environment.Exit(1);
         }
     }

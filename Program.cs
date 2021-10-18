@@ -1,6 +1,7 @@
 ﻿namespace BreadEngine {
     class Program {
         static void Main(string[] args) {
+            FastConsole.backgroundChar = ' ';
             FastConsole.Clear();
             FastConsole.Flush();
 

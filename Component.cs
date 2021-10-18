@@ -18,7 +18,7 @@ namespace BreadEngine {
             return toReturn;
         }
 
-        public bool OnKey(ConsoleKey key){
+        public virtual bool OnKey(ConsoleKey key){
             if(key == ConsoleKey.DownArrow || key == ConsoleKey.Tab){
                 return true;
             }else{
@@ -87,6 +87,68 @@ namespace BreadEngine {
 
 
     //TODO a loader that writes it's value next to it
+    public class Slider : Component {
+        public int percent = 90;
+
+        public Slider(){
+            textRepresentation = "LoadBarWithText";
+            foreground = ConsoleColor.Cyan;
+        }
+
+        public override char[] Draw(int width) {
+            char[] toReturn = new char[width];
+            string percent_str = percent.ToString().PadLeft(3, '0');
+            for (int i = 0; i < width; i++) {
+                switch (i) {
+                    case 0:
+                        toReturn[i] = '[';
+                        break;
+                    case 1:
+                        toReturn[i] = percent_str[0];
+                        break;
+                    case 2:
+                        toReturn[i] = percent_str[1];
+                        break;
+                    case 3:
+                        toReturn[i] = percent_str[2];
+                        break;
+                    case 4:
+                        toReturn[i] = ']';
+                        break;
+                    case 5:
+                        toReturn[i] = '[';
+                        break;
+                    default:
+                        if(i == width-1){
+                            toReturn[i] = ']';
+                        }else if(i-7 < ((width-8) * percent / 100)) { // width-7 100       000000111111111110
+                            toReturn[i] = '=';
+                        } else {
+                            toReturn[i] = ' ';
+                        }
+                        break;
+                }
+            }
+            //width: 100
+            // 
+            return toReturn;
+        }
+
+        public override bool OnKey(ConsoleKey key){
+            if(key == ConsoleKey.DownArrow || key == ConsoleKey.Tab){
+                return true;
+            } else if(key == ConsoleKey.LeftArrow) {
+                percent -= (0 < percent)? 1: 0;
+                return false;
+            } else if(key == ConsoleKey.RightArrow) {
+                percent += (percent < 100)? 1: 0;
+                return false;
+            } else{
+                return false;
+            }
+        }
+    }
+
     public class LoadBar : Component {
 
         public int percent = 90;

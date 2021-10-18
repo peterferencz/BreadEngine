@@ -84,7 +84,7 @@ namespace BreadEngine {
                         for (int x = 0; x < cell.Width; x++) {
                             char toWrite = '*';
 
-                            Console.ForegroundColor = borderColor;
+                            FastConsole.SetForeground(borderColor);
                             if (!t && !l && x == 0 && y == 0) {
                                 toWrite = '┌';
                             } else if(!t && !r && x == cell.Width-1 && y == 0) {
@@ -114,17 +114,17 @@ namespace BreadEngine {
                             } else if(y == cell.Height-1 && !b) {
                                 toWrite = '─';
                             } else {
-                                Console.ResetColor();
+                                FastConsole.ResetColor();
                                 if(objectIndex >= components.Count) {
                                     toWrite = ' ';
                                 } else {
                                     Component component = (Component)components[objectIndex];
                                     string objString = new String(component.Draw(cell.Width * currentRow.Count - 2));
-                                    Console.ForegroundColor = component.foreground;
+                                    FastConsole.SetForeground(component.foreground);
                                     if(selectedIndex == objectIndex){
-                                        Console.BackgroundColor = ConsoleColor.Blue;
+                                        FastConsole.SetBackground(ConsoleColor.Blue);
                                     }else{
-                                        Console.BackgroundColor = component.background;
+                                        FastConsole.SetBackground(component.background);
                                     }
                                     
                                     #region Drawing of string onto the screen
@@ -161,7 +161,7 @@ namespace BreadEngine {
                             FastConsole.SetCursor((cell.Width * cell.matrixX) + x, (cell.Height * cell.matrixY) + y);
                             FastConsole.Write(toWrite);
                             // FastConsole.Write('*');
-                            Console.ResetColor();
+                            FastConsole.ResetColor();
                         }
                     }
                 }
