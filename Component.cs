@@ -3,6 +3,15 @@ using System.Text;
 using System.Linq;
 
 namespace BreadEngine {
+
+    public enum ComponentNavigationAction{
+        Stay,
+        NextComponent,
+        PreviousComponent,
+        NextPanel,
+        PreviousPanel
+    }
+
     public class Component {
         
         public string textRepresentation = "Default component";
@@ -18,11 +27,13 @@ namespace BreadEngine {
             return toReturn;
         }
 
-        public virtual bool OnKey(ConsoleKey key){
+        public virtual ComponentNavigationAction OnKey(ConsoleKey key){
             if(key == ConsoleKey.DownArrow || key == ConsoleKey.Tab){
-                return true;
-            }else{
-                return false;
+                return ComponentNavigationAction.NextComponent;
+            }else if(key == ConsoleKey.UpArrow){
+                return ComponentNavigationAction.PreviousComponent;
+            } else {
+                return ComponentNavigationAction.Stay;
             }
         }
     }
@@ -134,17 +145,15 @@ namespace BreadEngine {
             return toReturn;
         }
 
-        public override bool OnKey(ConsoleKey key){
-            if(key == ConsoleKey.DownArrow || key == ConsoleKey.Tab){
-                return true;
-            } else if(key == ConsoleKey.LeftArrow) {
+        public override ComponentNavigationAction OnKey(ConsoleKey key){
+            if(key == ConsoleKey.LeftArrow) {
                 percent -= (0 < percent)? 1: 0;
-                return false;
+                return ComponentNavigationAction.Stay;
             } else if(key == ConsoleKey.RightArrow) {
                 percent += (percent < 100)? 1: 0;
-                return false;
+                return ComponentNavigationAction.Stay;
             } else{
-                return false;
+                return base.OnKey(key);
             }
         }
     }

@@ -2,9 +2,16 @@ using System;
 using System.Collections;
 
 namespace BreadEngine {
+
+    public enum PanelNavigationAction{
+        Stay,
+        NextPanel,
+        PreviousPanel
+    }
+
     public class Panel {
         public ArrayList cells = new ArrayList();
-        private ArrayList components = new ArrayList();
+        public ArrayList components = new ArrayList();
         private ArrayList cellsVerticalMatrix = new ArrayList();
         public ConsoleColor borderColor = ConsoleColor.White;
 
@@ -168,16 +175,38 @@ namespace BreadEngine {
             }
         }
 
-        public bool OnKey(ConsoleKey key){
-            if(((Component)components[selectedIndex]).OnKey(key)){
-                //Go to next cmponent
-                if(++selectedIndex >= components.Count){
-                    //Run out of components
+        public PanelNavigationAction OnKey(ConsoleKey key){
+            switch (((Component)components[selectedIndex]).OnKey(key)) {
+                case ComponentNavigationAction.Stay:
+                    //Do nothing
+                    break;
+                case ComponentNavigationAction.NextComponent:
+                    //Go to next component
+                    if(++selectedIndex >= components.Count){
+                        //Run out of components
+                        selectedIndex = -1;
+                        return PanelNavigationAction.NextPanel;
+                    }
+                    break;
+                case ComponentNavigationAction.NextPanel:
                     selectedIndex = -1;
-                    return true;
-                }
+                    return PanelNavigationAction.NextPanel;
+                case ComponentNavigationAction.PreviousComponent:
+                    //Previous component
+                    if(--selectedIndex <= -1){
+                        //Out of bounds
+                        selectedIndex = -1;
+                        return PanelNavigationAction.PreviousPanel;
+                    }
+                    break;
+                case ComponentNavigationAction.PreviousPanel:
+                    selectedIndex = -1;
+                    return PanelNavigationAction.PreviousPanel;
+                default:
+                    //Do nothing
+                    break;
             }
-            return false;
+            return PanelNavigationAction.Stay;
         }
 
         // This function returns weather we own a

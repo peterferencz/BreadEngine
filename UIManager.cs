@@ -60,11 +60,24 @@ namespace BreadEngine {
                 FastConsole.Flush();
 
                 ConsoleKey key = FastConsole.ReadKey().Key;
-                if(panels[(char)navigation[selectedIndex]].OnKey(key)){
-                    if(++selectedIndex >= navigation.Count){
-                        selectedIndex = 0;
-                    }
-                    panels[(char)navigation[selectedIndex]].selectedIndex = 0;
+                switch (panels[(char)navigation[selectedIndex]].OnKey(key)) {
+                    case PanelNavigationAction.Stay:
+                        //Do nothing
+                        break;
+                    case PanelNavigationAction.NextPanel:
+                        if(++selectedIndex >= navigation.Count){
+                            selectedIndex = 0;
+                        }
+                        panels[(char)navigation[selectedIndex]].selectedIndex = 0;
+                        break;
+                    case PanelNavigationAction.PreviousPanel:
+                        if(--selectedIndex <= -1){
+                            selectedIndex = navigation.Count-1;
+                        }
+                        panels[(char)navigation[selectedIndex]].selectedIndex = panels[(char)navigation[selectedIndex]].components.Count-1;
+                        break;
+                    default:
+                        break;
                 }
             }
         }
