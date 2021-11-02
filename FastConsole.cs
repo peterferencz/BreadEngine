@@ -4,16 +4,38 @@ using System.Text;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace BreadEngine {
 
+    public struct ConsoleChar {
+        public ConsoleColor color;
+        public char character;
+
+        public override bool Equals(object obj) {
+            if (obj.GetType() == typeof(ConsoleChar)) {
+                ConsoleChar c = (ConsoleChar)obj;
+                return (c.color == color) && (c.character == character);
+            } else {
+                return false;
+            }
+        }
+
+        public override int GetHashCode() {
+            return base.GetHashCode();
+        }
+    }
+
     public class FastConsole {
 
-        public static char backgroundChar = ' ';
+        public static ConsoleChar backgroundChar = new ConsoleChar(){character = ' ', color = ConsoleColor.White};
 
-        static char[] buffer;
+        static ConsoleChar[] currentBuffer;
+        static ConsoleChar[] buffer;
         
         private static int offset = 0;
+        //private static readonly BufferedStream outputStream;
+        //private static StreamWriter streamWriter;
 
         public static int Width{
             get{ return Console.WindowWidth; }
@@ -26,16 +48,21 @@ namespace BreadEngine {
             Console.OutputEncoding = System.Text.Encoding.Unicode;
             Console.CursorVisible = false;
 
+            //outputStream = new BufferedStream(Console.OpenStandardOutput(), Width * Height);
+            // streamWriter = new StreamWriter(Console.OpenStandardOutput(), Encoding.Unicode, Width * Height * 4);
+            // streamWriter.AutoFlush = false;
+            
+            currentBuffer = Enumerable.Repeat(new ConsoleChar(), Width * Height).ToArray();
             Clear();
         }
 
         public static void SetCursor(int x, int y){
-            //FastConsole.offset = y * Width + x;
-            Console.SetCursorPosition(x,y);
+            offset = y * Width + x;
+            //Console.SetCursorPosition(x,y);
         }
 
 
-        public static void Write(char c){
+        public static void Write(char c, ConsoleColor color){
             // Write(c.ToString());
             // Console.ForegroundColor = ConsoleColor.Blue;
             // Console.Write(c);
@@ -48,44 +75,62 @@ namespace BreadEngine {
             //1,0 1,1 1,2 1,3   4 5 6 7
             //2,0 2,1 2,2 2,3   8 9 11 12
 
-            //buffer[offset++] = c;
-            Console.Write(c);
+            buffer[offset++] = new ConsoleChar(){character = c, color = color};
+            
+
+            //Write(""+c);
+            //Console.Write(c);
         }
 
-        public static void Write(string s){
-            // for (int i = 0; i < s.Length; i++) {
-            //     buffer[offset++] = s[i];
+        public static void Write(string s, ConsoleColor color = ConsoleColor.White){
+            for (int i = 0; i < s.Length; i++) {
+                buffer[offset++] = new ConsoleChar(){character = s[i], color = color};
+            }
+
+            
+            
+            // offset += s.Length;
+            // var rgb = new byte[s.Length << 1];
+            // Encoding.Unicode.GetBytes(s, 0, s.Length, rgb, 0);
+
+            // lock (outputStream) {  // (optional, can omit if appropriate)
+            //     Console.WriteLine($"offset: {offset}; length: ");
+            //     outputStream.Write(rgb, offset, rgb.Length);
+            //     offset += rgb.Length;
             // }
-            Console.Write(s);
+            //Console.Write(s);
         }
 
         public static void Clear(){
+            //Console.Clear();
             buffer = Enumerable.Repeat(backgroundChar, Width * Height).ToArray();
             offset = 0;
-            Console.Clear();
         }
 
         public static ConsoleKeyInfo ReadKey(){
             return Console.ReadKey(true);
         }
 
-        public static void SetForeground(ConsoleColor color){
-            Console.ForegroundColor = color;
-        }
-
-        public static void SetBackground(ConsoleColor color){
-            Console.BackgroundColor = color;
-        }
-        
-        public static void ResetColor(){
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.BackgroundColor = ConsoleColor.Black;
-        }
-
         public static void Flush() {
             Console.SetCursorPosition(0,0);
+            for (int i = 0; i < buffer.Length; i++) {
+                if(!currentBuffer[i].Equals(buffer[i])){
+                    Console.SetCursorPosition(i % Width, i / Width);
+                    Console.ForegroundColor = buffer[i].color;
+                    Console.Write(buffer[i].character);
+                }
+                
+            }
+            
+            currentBuffer = buffer;
+            
+
             //Console.Clear();
-            //Console.Write(new String(buffer));
+            //Console.Write('x');
+            
+            // byte[] bytes = Encoding.Unicode.GetBytes(buffer, 0, buffer.Length);
+            
+
         }
     }
 }

@@ -178,10 +178,8 @@ namespace BreadEngine {
 
         //Stops execution and prompts to user
         public static void ThrowError(string message) {
-            FastConsole.SetForeground(ConsoleColor.Red);
-            FastConsole.Write("An error occured: ");
-            FastConsole.Write(message);
-            FastConsole.SetForeground(ConsoleColor.White);
+            FastConsole.Write("An error occured: ", ConsoleColor.Red);
+            FastConsole.Write(message, ConsoleColor.Red);
             FastConsole.Flush();
             Console.SetCursorPosition(0,1);
             Environment.Exit(1);

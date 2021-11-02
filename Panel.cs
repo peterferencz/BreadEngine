@@ -90,8 +90,8 @@ namespace BreadEngine {
                         b = isOurCell(cell.matrixX, cell.matrixY+1);
                         for (int x = 0; x < cell.Width; x++) {
                             char toWrite = '*';
+                            ConsoleColor color = borderColor;
 
-                            FastConsole.SetForeground(borderColor);
                             if (!t && !l && x == 0 && y == 0) {
                                 toWrite = '┌';
                             } else if(!t && !r && x == cell.Width-1 && y == 0) {
@@ -121,17 +121,18 @@ namespace BreadEngine {
                             } else if(y == cell.Height-1 && !b) {
                                 toWrite = '─';
                             } else {
-                                FastConsole.ResetColor();
+                                // FastConsole.ResetColor();
                                 if(objectIndex >= components.Count) {
                                     toWrite = ' ';
                                 } else {
                                     Component component = (Component)components[objectIndex];
                                     string objString = new String(component.Draw(cell.Width * currentRow.Count - 2));
-                                    FastConsole.SetForeground(component.foreground);
+                                    color = component.foreground;
                                     if(selectedIndex == objectIndex){
-                                        FastConsole.SetBackground(ConsoleColor.Blue);
+                                        color = ConsoleColor.Red;
+                                        //FastConsole.SetBackground(ConsoleColor.Blue);
                                     }else{
-                                        FastConsole.SetBackground(component.background);
+                                        //FastConsole.SetBackground(component.background);
                                     }
                                     
                                     #region Drawing of string onto the screen
@@ -166,9 +167,9 @@ namespace BreadEngine {
                             }
                             
                             FastConsole.SetCursor((cell.Width * cell.matrixX) + x, (cell.Height * cell.matrixY) + y);
-                            FastConsole.Write(toWrite);
+                            FastConsole.Write(toWrite, color);
                             // FastConsole.Write('*');
-                            FastConsole.ResetColor();
+                            // FastConsole.ResetColor();
                         }
                     }
                 }
