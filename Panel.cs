@@ -172,8 +172,8 @@ namespace BreadEngine {
             }
         }
 
-        public PanelNavigationAction OnKey(ConsoleKey key){
-            switch (((Component)components[selectedIndex]).OnKey(key)) {
+        public PanelNavigationAction OnKey(ConsoleKeyInfo keyInfo){
+            switch (((Component)components[selectedIndex]).OnKey(keyInfo)) {
                 case ComponentNavigationAction.Stay:
                     //Do nothing
                     break;

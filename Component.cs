@@ -27,10 +27,10 @@ namespace BreadEngine {
             return toReturn;
         }
 
-        public virtual ComponentNavigationAction OnKey(ConsoleKey key){
-            if(key == ConsoleKey.DownArrow || key == ConsoleKey.Tab){
+        public virtual ComponentNavigationAction OnKey(ConsoleKeyInfo keyInfo){
+            if(keyInfo.Key == ConsoleKey.DownArrow || keyInfo.Key == ConsoleKey.Tab){
                 return ComponentNavigationAction.NextComponent;
-            }else if(key == ConsoleKey.UpArrow){
+            }else if(keyInfo.Key == ConsoleKey.UpArrow){
                 return ComponentNavigationAction.PreviousComponent;
             } else {
                 return ComponentNavigationAction.Stay;
@@ -145,15 +145,15 @@ namespace BreadEngine {
             return toReturn;
         }
 
-        public override ComponentNavigationAction OnKey(ConsoleKey key){
-            if(key == ConsoleKey.LeftArrow) {
+        public override ComponentNavigationAction OnKey(ConsoleKeyInfo keyInfo){
+            if(keyInfo.Key == ConsoleKey.LeftArrow) {
                 percent -= (0 < percent)? 1: 0;
                 return ComponentNavigationAction.Stay;
-            } else if(key == ConsoleKey.RightArrow) {
+            } else if(keyInfo.Key == ConsoleKey.RightArrow) {
                 percent += (percent < 100)? 1: 0;
                 return ComponentNavigationAction.Stay;
             } else{
-                return base.OnKey(key);
+                return base.OnKey(keyInfo);
             }
         }
     }
@@ -197,13 +197,13 @@ public class TextBox : Component {
             return toReturn;
         }
 
-        public override ComponentNavigationAction OnKey(ConsoleKey key){
-            if(key == ConsoleKey.DownArrow || key == ConsoleKey.Tab){
+        public override ComponentNavigationAction OnKey(ConsoleKeyInfo keyInfo){
+            if(keyInfo.Key == ConsoleKey.DownArrow || keyInfo.Key == ConsoleKey.Tab){
                 return ComponentNavigationAction.NextComponent;
-            }else if(key == ConsoleKey.UpArrow){
+            }else if(keyInfo.Key == ConsoleKey.UpArrow){
                 return ComponentNavigationAction.PreviousComponent;
             } else {
-                text += ((char)key);
+                text += keyInfo.KeyChar;
                 return ComponentNavigationAction.Stay;
             }
         }

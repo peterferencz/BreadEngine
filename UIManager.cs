@@ -69,8 +69,9 @@ namespace BreadEngine {
                 }
                 FastConsole.Flush();
 
-                ConsoleKey key = FastConsole.ReadKey().Key;
-                
+                ConsoleKeyInfo keyInfo = FastConsole.ReadKey();
+                ConsoleKey key = keyInfo.Key;
+
                 //PassTrough
                 if (universalKeyCodes.ContainsKey(key)) {
                     bool passTrough = universalKeyCodes[key].Invoke();
@@ -80,7 +81,7 @@ namespace BreadEngine {
                 }
 
                 //Sending it down to components
-                switch (panels[(char)navigation[selectedIndex]].OnKey(key)) {
+                switch (panels[(char)navigation[selectedIndex]].OnKey(keyInfo)) {
                     case PanelNavigationAction.Stay:
                         //Do nothing
                         break;
