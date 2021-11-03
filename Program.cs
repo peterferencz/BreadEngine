@@ -1,10 +1,18 @@
-﻿namespace BreadEngine {
+﻿using System;
+
+namespace BreadEngine {
     class Program {
         static void Main(string[] args) {
             FastConsole.Clear();
-            FastConsole.Flush();
 
             ReadReturn ret = FileReader.Read(".Layout");
+            UIManager.addUniversalKeyBind(ConsoleKey.Escape,() => {
+                Console.ResetColor();
+                Console.Clear();
+                Environment.Exit(1);
+                return false;
+            });
+
             UIManager.StartLoop(ret);
             
             FastConsole.SetCursor(0,0);

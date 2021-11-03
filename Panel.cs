@@ -90,7 +90,8 @@ namespace BreadEngine {
                         b = isOurCell(cell.matrixX, cell.matrixY+1);
                         for (int x = 0; x < cell.Width; x++) {
                             char toWrite = '*';
-                            ConsoleColor color = borderColor;
+                            ConsoleColor foreColor = borderColor;
+                            ConsoleColor backColor = ConsoleColor.Black;
 
                             if (!t && !l && x == 0 && y == 0) {
                                 toWrite = '┌';
@@ -127,12 +128,9 @@ namespace BreadEngine {
                                 } else {
                                     Component component = (Component)components[objectIndex];
                                     string objString = new String(component.Draw(cell.Width * currentRow.Count - 2));
-                                    color = component.foreground;
+                                    foreColor = component.foreground;
                                     if(selectedIndex == objectIndex){
-                                        color = ConsoleColor.Red;
-                                        //FastConsole.SetBackground(ConsoleColor.Blue);
-                                    }else{
-                                        //FastConsole.SetBackground(component.background);
+                                        backColor = ConsoleColor.Red;
                                     }
                                     
                                     #region Drawing of string onto the screen
@@ -167,9 +165,7 @@ namespace BreadEngine {
                             }
                             
                             FastConsole.SetCursor((cell.Width * cell.matrixX) + x, (cell.Height * cell.matrixY) + y);
-                            FastConsole.Write(toWrite, color);
-                            // FastConsole.Write('*');
-                            // FastConsole.ResetColor();
+                            FastConsole.Write(toWrite, foreColor, backColor);
                         }
                     }
                 }

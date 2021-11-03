@@ -11,11 +11,21 @@ namespace BreadEngine {
         // the matrix is loaded from top to bottom
         // so top is actually y-1
 
+
+        //True for passtrough
+        public delegate bool KeyCallBack();
+
+
+        private static Dictionary<ConsoleKey,KeyCallBack> universalKeyCodes = new Dictionary<ConsoleKey, KeyCallBack>();
         private static ArrayList matrix;
         private static Dictionary<char, ArrayList> identifiers;
         private static Dictionary<char, Panel> panels = new Dictionary<char, Panel>();
         private static ArrayList navigation;
         private static int selectedIndex = 0;
+
+        public static void addUniversalKeyBind(ConsoleKey key, KeyCallBack callback){
+            universalKeyCodes.Add(key, callback);
+        }
 
         public static void StartLoop(ReadReturn data) {
             matrix = data.matrix;
@@ -60,6 +70,16 @@ namespace BreadEngine {
                 FastConsole.Flush();
 
                 ConsoleKey key = FastConsole.ReadKey().Key;
+                
+                //PassTrough
+                if (universalKeyCodes.ContainsKey(key)) {
+                    bool passTrough = universalKeyCodes[key].Invoke();
+                    if (!passTrough) {
+                        continue;
+                    }
+                }
+
+                //Sending it down to components
                 switch (panels[(char)navigation[selectedIndex]].OnKey(key)) {
                     case PanelNavigationAction.Stay:
                         //Do nothing
@@ -86,31 +106,31 @@ namespace BreadEngine {
         // This method returns the sector
         // corresponding in the matrix
         // defined in the layout
-        static char getSectorFromMatrix(int x, int y) {
-            return ((char[])matrix[y])[x];
-        }
+        // static char getSectorFromMatrix(int x, int y) {
+        //     return ((char[])matrix[y])[x];
+        // }
 
         /// This method returns the character representing
         /// the given panel inside the layout file given the
         /// screen x and y coordinates
-        static char GetSectorFromPixel(int x, int y) {
-            int matrixHeight = matrix.Count;            
-            int matrixWidth = ((char[])matrix[0]).Length;
-            int screenWidth = FastConsole.Width;
-            int screenHeight = FastConsole.Height;
+        // static char GetSectorFromPixel(int x, int y) {
+        //     int matrixHeight = matrix.Count;            
+        //     int matrixWidth = ((char[])matrix[0]).Length;
+        //     int screenWidth = FastConsole.Width;
+        //     int screenHeight = FastConsole.Height;
 
-            int sectionWidth = screenWidth / matrixWidth;
-            int sectionHeight = screenHeight / matrixHeight;
+        //     int sectionWidth = screenWidth / matrixWidth;
+        //     int sectionHeight = screenHeight / matrixHeight;
 
-            int xSection = Math.Clamp(x / sectionWidth, 0, matrixWidth-1);
-            int ySection = Math.Clamp(y / sectionHeight, 0, matrixHeight-1);
+        //     int xSection = Math.Clamp(x / sectionWidth, 0, matrixWidth-1);
+        //     int ySection = Math.Clamp(y / sectionHeight, 0, matrixHeight-1);
 
-            if(x < 0 || x > screenWidth-1 || y < 0 || y > screenHeight-1){
-                return '\0';
-            }
+        //     if(x < 0 || x > screenWidth-1 || y < 0 || y > screenHeight-1){
+        //         return '\0';
+        //     }
 
-            return ((char[])(matrix[ySection]))[xSection];
-        }
+        //     return ((char[])(matrix[ySection]))[xSection];
+        // }
 
     }
 }

@@ -185,4 +185,27 @@ namespace BreadEngine {
             return toReturn;
         }
     }
+public class TextBox : Component {
+        
+        public string text = "";
+
+        public override char[] Draw(int width){
+            char[] toReturn = new char[text.Length];
+            for (int i = 0; i < text.Length; i++) {
+                toReturn[i] = text[i];
+            }
+            return toReturn;
+        }
+
+        public override ComponentNavigationAction OnKey(ConsoleKey key){
+            if(key == ConsoleKey.DownArrow || key == ConsoleKey.Tab){
+                return ComponentNavigationAction.NextComponent;
+            }else if(key == ConsoleKey.UpArrow){
+                return ComponentNavigationAction.PreviousComponent;
+            } else {
+                text += ((char)key);
+                return ComponentNavigationAction.Stay;
+            }
+        }
+    }
 }

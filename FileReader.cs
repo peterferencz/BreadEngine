@@ -99,26 +99,8 @@ namespace BreadEngine {
                             matrix.Add(_sections);
                         } else if(currentIdentifier != '\0') {
                             //Parsing of components
-
-                            if(line.StartsWith("text")) {
-                                identifiers[currentIdentifier].Add(new Text(getParameter(line, lineCounter)));
-                            } else if(line.StartsWith("button")) {
-                                identifiers[currentIdentifier].Add(new Button(getParameter(line, lineCounter)));
-                            } else if(line.StartsWith("title")) { //TODO check for multiple titles
-                                identifiers[currentIdentifier].Add(new Title(getParameter(line, lineCounter)));
-                            } else if(line.StartsWith("spacer")) {
-                                if(line.Length > 6 && line[6] == '('){
-                                    identifiers[currentIdentifier].Add(new Spacer(getParameter(line,lineCounter)));
-                                }else{
-                                    identifiers[currentIdentifier].Add(new Spacer());
-                                }
-                            } else if(line.StartsWith("loader")) {
-                                identifiers[currentIdentifier].Add(new LoadBar());
-                            } else if(line.StartsWith("slider")) {
-                                identifiers[currentIdentifier].Add(new Slider());
-                            } else {
-                                ThrowError($"Unrecognized component on line {lineCounter}");
-                            }
+                            identifiers[currentIdentifier].Add(parseComponent(line, lineCounter));
+                            
                         } else if(inNavigation){
                             string[] lineSections = line.Split(' ');
                             for (int i = 0; i < lineSections.Length; i++) {
@@ -155,9 +137,60 @@ namespace BreadEngine {
         }
 
 
+        private static Component parseComponent(string line, int lineCounter){
+            int OpeningBracketIndex = line.IndexOf('(');
+            int ClosingBracketIndex = line.LastIndexOf(')');
+
+            if(OpeningBracketIndex == -1) {
+                if (ClosingBracketIndex != -1) {
+                    ThrowError($"Found ')', but no '(' (line {lineCounter})");
+                    return null;
+                }
+                //No parameters
+                string componentname = line.ToLower().Trim();
+                switch (componentname) {
+                    case "text":
+                        return new Text(getParameter(line, lineCounter));
+                    case "button":
+                        return new Button(getParameter(line, lineCounter));
+                    case "title":
+                        //TODO check for multiple titles
+                        return new Title(getParameter(line, lineCounter));
+                    case "loader":
+                        return new LoadBar();
+                    case "slider":
+                        return new Slider();
+                    case "textbox":
+                        return new TextBox();
+                    case "spacer":
+                        return new Spacer();
+                    default:
+                        ThrowError($"Unrecognized component on line {lineCounter}");
+                        return null;
+                }
+            }else{
+                //With Parameters
+                string componentname = line.ToLower().Trim().Substring(0, OpeningBracketIndex);
+                switch (componentname) {
+                    case "text":
+                        return new Text(getParameter(line, lineCounter));
+                    case "button":
+                        return new Button(getParameter(line, lineCounter));
+                    case "title":
+                        //TODO check for multiple titles
+                        return new Title(getParameter(line, lineCounter));
+                    case "spacer":
+                        return new Spacer(getParameter(line,lineCounter));
+                    default:
+                        ThrowError($"Unrecognized component on line {lineCounter}");
+                        return null;
+                }
+            }
+        }
+
         //Extracts the string from inside of
         // the caracters '(' and ')'
-        public static string getParameter(string line, int lineCount) {
+        private static string getParameter(string line, int lineCount) {
             int from = line.IndexOf('(');
             int to = line.LastIndexOf(')');
             if(from == -1) {
@@ -177,7 +210,7 @@ namespace BreadEngine {
 
 
         //Stops execution and prompts to user
-        public static void ThrowError(string message) {
+        private static void ThrowError(string message) {
             FastConsole.Write("An error occured: ", ConsoleColor.Red);
             FastConsole.Write(message, ConsoleColor.Red);
             FastConsole.Flush();

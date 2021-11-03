@@ -9,13 +9,26 @@ using System.Runtime.InteropServices;
 namespace BreadEngine {
 
     public struct ConsoleChar {
-        public ConsoleColor color;
+        public ConsoleColor ForeGroundColor;
+        public ConsoleColor BackGroundColor;
         public char character;
+
+
+        // public ConsoleChar(){
+        //     ForeGroundColor = ConsoleColor.White;
+        //     BackGroundColor = ConsoleColor.Black;
+        //     character = ' ';
+        // }
+        public ConsoleChar(char character, ConsoleColor ForeGroundColor,ConsoleColor BackGroundColor){
+            this.ForeGroundColor = ForeGroundColor;
+            this.BackGroundColor = BackGroundColor;
+            this.character = character;
+        }
 
         public override bool Equals(object obj) {
             if (obj.GetType() == typeof(ConsoleChar)) {
                 ConsoleChar c = (ConsoleChar)obj;
-                return (c.color == color) && (c.character == character);
+                return (c.ForeGroundColor == ForeGroundColor) && (c.BackGroundColor == BackGroundColor) && (c.character == character);
             } else {
                 return false;
             }
@@ -28,7 +41,7 @@ namespace BreadEngine {
 
     public class FastConsole {
 
-        public static ConsoleChar backgroundChar = new ConsoleChar(){character = ' ', color = ConsoleColor.White};
+        public static ConsoleChar backgroundChar = new ConsoleChar(' ', ConsoleColor.White, ConsoleColor.Black);
 
         static ConsoleChar[] currentBuffer;
         static ConsoleChar[] buffer;
@@ -62,7 +75,7 @@ namespace BreadEngine {
         }
 
 
-        public static void Write(char c, ConsoleColor color){
+        public static void Write(char c, ConsoleColor ForeGroundColor = ConsoleColor.White, ConsoleColor BackGroundColor = ConsoleColor.Black){
             // Write(c.ToString());
             // Console.ForegroundColor = ConsoleColor.Blue;
             // Console.Write(c);
@@ -75,16 +88,16 @@ namespace BreadEngine {
             //1,0 1,1 1,2 1,3   4 5 6 7
             //2,0 2,1 2,2 2,3   8 9 11 12
 
-            buffer[offset++] = new ConsoleChar(){character = c, color = color};
+            buffer[offset++] = new ConsoleChar(c, ForeGroundColor, BackGroundColor);
             
 
             //Write(""+c);
             //Console.Write(c);
         }
 
-        public static void Write(string s, ConsoleColor color = ConsoleColor.White){
+        public static void Write(string s, ConsoleColor ForeGroundColor = ConsoleColor.White, ConsoleColor BackGroundColor = ConsoleColor.Black){
             for (int i = 0; i < s.Length; i++) {
-                buffer[offset++] = new ConsoleChar(){character = s[i], color = color};
+                buffer[offset++] = new ConsoleChar(s[i], ForeGroundColor, BackGroundColor);
             }
 
             
@@ -116,7 +129,8 @@ namespace BreadEngine {
             for (int i = 0; i < buffer.Length; i++) {
                 if(!currentBuffer[i].Equals(buffer[i])){
                     Console.SetCursorPosition(i % Width, i / Width);
-                    Console.ForegroundColor = buffer[i].color;
+                    Console.ForegroundColor = buffer[i].ForeGroundColor;
+                    Console.BackgroundColor = buffer[i].BackGroundColor;
                     Console.Write(buffer[i].character);
                 }
                 
