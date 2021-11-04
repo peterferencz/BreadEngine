@@ -13,18 +13,11 @@ namespace BreadEngine {
     }
 
     public class Component {
-        
-        public string textRepresentation = "Default component";
-
         public ConsoleColor foreground = ConsoleColor.White;
         public ConsoleColor background = ConsoleColor.Black;
 
         public virtual char[] Draw(int width){
-            char[] toReturn = new char[textRepresentation.Length];
-            for (int i = 0; i < textRepresentation.Length; i++) {
-                toReturn[i] = textRepresentation[i];
-            }
-            return toReturn;
+            return new char[width];
         }
 
         public virtual ComponentNavigationAction OnKey(ConsoleKeyInfo keyInfo){
@@ -39,19 +32,28 @@ namespace BreadEngine {
     }
 
     public class Text : Component {
+        public string text;
+
         public Text(string text) {
-            textRepresentation = text;
+            this.text = text;
             foreground = ConsoleColor.White;
             background = ConsoleColor.Black;
         }
 
-        
+        public override char[] Draw(int width){
+            char[] toReturn = new char[text.Length];
+            for (int i = 0; i < text.Length; i++) {
+                toReturn[i] = text[i];
+            }
+            return toReturn;
+        }
     }
 
     public class Title : Component {
+        public string text;
 
         public Title(string text) {
-            textRepresentation = text;
+            this.text = text;
             foreground = ConsoleColor.White;
             background = ConsoleColor.Black;
         }
@@ -62,8 +64,8 @@ namespace BreadEngine {
                 if(i == 0){
                     toReturn[i] = '─';
                 }else{
-                    if(i <= textRepresentation.Length){
-                        toReturn[i] = textRepresentation[i-1];
+                    if(i <= text.Length){
+                        toReturn[i] = text[i-1];
                     } else {
                         toReturn[i] = '─';
                     }
@@ -74,6 +76,8 @@ namespace BreadEngine {
     }
 
     public class Spacer : Component{
+        public string text;
+
         string spacer;
 
         public Spacer(string spaceWith = " ") {
@@ -90,19 +94,30 @@ namespace BreadEngine {
     }
 
     public class Button : Component {
+        public string text;
+
         public Button(string text) {
-            textRepresentation = text;
+            this.text = text;
             foreground = ConsoleColor.Green;
+        }
+
+        public override char[] Draw(int width){
+            char[] toReturn = new char[text.Length];
+            for (int i = 0; i < text.Length; i++) {
+                toReturn[i] = text[i];
+            }
+            return toReturn;
         }
     }
 
 
     //TODO a loader that writes it's value next to it
     public class Slider : Component {
+        public string text;
         public int percent = 90;
 
         public Slider(){
-            textRepresentation = "LoadBarWithText";
+            text = "LoadBarWithText";
             foreground = ConsoleColor.Cyan;
         }
 
@@ -159,11 +174,9 @@ namespace BreadEngine {
     }
 
     public class LoadBar : Component {
-
         public int percent = 90;
 
         public LoadBar(){
-            textRepresentation = "LoadBar";
             foreground = ConsoleColor.Blue;
         }
 
@@ -203,7 +216,23 @@ public class TextBox : Component {
             }else if(keyInfo.Key == ConsoleKey.UpArrow){
                 return ComponentNavigationAction.PreviousComponent;
             } else {
-                text += keyInfo.KeyChar;
+                switch (keyInfo.Key) {
+                    case ConsoleKey.Enter:
+                    case ConsoleKey.End:
+                    case ConsoleKey.Home:
+                    case ConsoleKey.LeftArrow:
+                    case ConsoleKey.RightArrow:
+                    case ConsoleKey.UpArrow:
+                    case ConsoleKey.DownArrow:
+                        break;
+                    case ConsoleKey.Backspace:
+                        text = text.Substring(0, text.Length-1);
+                        break;
+
+                    default:
+                        text += keyInfo.KeyChar;
+                        break;
+                }
                 return ComponentNavigationAction.Stay;
             }
         }
