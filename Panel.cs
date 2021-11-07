@@ -28,7 +28,14 @@ namespace BreadEngine {
             }
         }
 
-        
+        public Component GetComponent(string uid){
+            foreach (Component component in components) {
+                if (component.uid == uid) {
+                    return component;
+                }
+            }
+            return null;
+        }
 
         bool firstDrawCall = true;
         public void Draw(){

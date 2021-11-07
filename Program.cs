@@ -6,6 +6,8 @@ namespace BreadEngine {
             FastConsole.Clear();
 
             ReadReturn ret = FileReader.Read(".Layout");
+            UIManager.SetUI(ret);
+
             UIManager.addUniversalKeyBind(ConsoleKey.Escape,() => {
                 Console.ResetColor();
                 Console.Clear();
@@ -13,7 +15,12 @@ namespace BreadEngine {
                 return false;
             });
 
-            UIManager.StartLoop(ret);
+            Button testButton = (Button) UIManager.GetComponent("test");
+            testButton.SetCallback(() => {
+                testButton.text = "Hello world!";
+            });
+            FastConsole.Flush();
+            UIManager.StartLoop();
             
             FastConsole.SetCursor(0,0);
             FastConsole.Write("Program Stopped execution");

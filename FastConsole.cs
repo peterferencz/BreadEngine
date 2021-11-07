@@ -96,6 +96,9 @@ namespace BreadEngine {
         }
 
         public static void Write(string s, ConsoleColor ForeGroundColor = ConsoleColor.White, ConsoleColor BackGroundColor = ConsoleColor.Black){
+            if(s == null){
+                return;
+            }
             for (int i = 0; i < s.Length; i++) {
                 buffer[offset++] = new ConsoleChar(s[i], ForeGroundColor, BackGroundColor);
             }

@@ -11,13 +11,12 @@
 0 1 2 3 4
 
 :0
-SLIDER
 SPACER(=)
 TEXT(This is an app created with BreadEngine)
 SPACER(=)
 SPACER
 TEXT(This engine makes it super easy to create terminal ui-s. You Just simply define the layout in the .Layout file)
-BUTTON(Start creating awesome apps with BreadEngine)
+BUTTON#test(Start creating awesome apps with BreadEngine)
 
 :1
 TITLE(Layout)

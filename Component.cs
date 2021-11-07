@@ -16,6 +16,8 @@ namespace BreadEngine {
         public ConsoleColor foreground = ConsoleColor.White;
         public ConsoleColor background = ConsoleColor.Black;
 
+        public string uid = null;
+
         public virtual char[] Draw(int width){
             return new char[width];
         }
@@ -27,6 +29,14 @@ namespace BreadEngine {
                 return ComponentNavigationAction.PreviousComponent;
             } else {
                 return ComponentNavigationAction.Stay;
+            }
+        }
+
+        public override string ToString() {
+            if (uid != null) {
+                return $"{this.GetType().Name.ToUpper()}({uid})";
+            }else{
+                return this.GetType().Name.ToUpper();
             }
         }
     }
@@ -93,12 +103,19 @@ namespace BreadEngine {
         }
     }
 
+
     public class Button : Component {
+        public delegate void ButtonCallback();
+        private ButtonCallback callback = () => {};
         public string text;
 
         public Button(string text) {
             this.text = text;
             foreground = ConsoleColor.Green;
+        }
+
+        public void SetCallback(ButtonCallback callback){
+            this.callback = callback;
         }
 
         public override char[] Draw(int width){
@@ -107,6 +124,15 @@ namespace BreadEngine {
                 toReturn[i] = text[i];
             }
             return toReturn;
+        }
+
+        public override ComponentNavigationAction OnKey(ConsoleKeyInfo keyInfo){
+            if(keyInfo.Key == ConsoleKey.Enter){
+                callback();
+                return ComponentNavigationAction.Stay;
+            } else {
+                return base.OnKey(keyInfo);
+            }
         }
     }
 

@@ -27,17 +27,32 @@ namespace BreadEngine {
             universalKeyCodes.Add(key, callback);
         }
 
-        public static void StartLoop(ReadReturn data) {
+        public static Panel GetPanel(char identifier){
+            return panels[identifier];
+        }
+
+        public static Component GetComponent(string uid){ //TODO check for null
+            foreach (KeyValuePair<char,Panel> panel in panels) {
+                Component _toReturn = panel.Value.GetComponent(uid);
+                if (_toReturn != null) {
+                    return _toReturn;
+                }
+            }
+            return null;
+        }
+
+        public static void SetUI(ReadReturn data){
             matrix = data.matrix;
             identifiers = data.identifiers;
             navigation = data.naviagation;
 
+            //Filling up panels
             foreach (KeyValuePair<char, ArrayList> identifier in identifiers) {
                 panels.Add(identifier.Key, new Panel(identifier.Value, matrix.Count));
             }
+        }
 
-            
-            
+        public static void StartLoop() {
             int matrixHeight = matrix.Count;            
             int matrixWidth = ((char[])matrix[0]).Length;
             int screenWidth = FastConsole.Width;

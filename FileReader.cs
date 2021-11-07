@@ -140,52 +140,82 @@ namespace BreadEngine {
         private static Component parseComponent(string line, int lineCounter){
             int OpeningBracketIndex = line.IndexOf('(');
             int ClosingBracketIndex = line.LastIndexOf(')');
+            int HashIndex = line.IndexOf('#');
+            bool hasId = false;
 
+
+            Component component;
+            string uid = null;
             if(OpeningBracketIndex == -1) {
                 if (ClosingBracketIndex != -1) {
                     ThrowError($"Found ')', but no '(' (line {lineCounter})");
                     return null;
                 }
+
+                hasId = HashIndex != -1;
+                if (hasId)
+                    uid = line.Substring(HashIndex+1);
+                
                 //No parameters
-                string componentname = line.ToLower().Trim();
+                string componentname = ((hasId) ?  line.Substring(0, HashIndex) : line).ToLower().Trim();
                 switch (componentname) {
                     case "text":
-                        return new Text(getParameter(line, lineCounter));
+                        component = new Text(getParameter(line, lineCounter));
+                        break;
                     case "button":
-                        return new Button(getParameter(line, lineCounter));
+                        component = new Button(getParameter(line, lineCounter));
+                        break;
                     case "title":
                         //TODO check for multiple titles
-                        return new Title(getParameter(line, lineCounter));
+                        component = new Title(getParameter(line, lineCounter));
+                        break;
                     case "loader":
-                        return new LoadBar();
+                        component = new LoadBar();
+                        break;
                     case "slider":
-                        return new Slider();
+                        component = new Slider();
+                        break;
                     case "textbox":
-                        return new TextBox();
+                        component = new TextBox();
+                        break;
                     case "spacer":
-                        return new Spacer();
+                        component = new Spacer();
+                        break;
                     default:
                         ThrowError($"Unrecognized component on line {lineCounter}");
                         return null;
                 }
             }else{
                 //With Parameters
-                string componentname = line.ToLower().Trim().Substring(0, OpeningBracketIndex);
+                hasId = HashIndex != -1 && HashIndex < OpeningBracketIndex;
+                if (hasId)
+                    uid = line.Substring(HashIndex+1, OpeningBracketIndex - HashIndex-1);
+                string componentname = line.ToLower().Trim().Substring(0, OpeningBracketIndex - ((hasId)?HashIndex-1:0));
                 switch (componentname) {
                     case "text":
-                        return new Text(getParameter(line, lineCounter));
+                        component = new Text(getParameter(line, lineCounter));
+                        break;
                     case "button":
-                        return new Button(getParameter(line, lineCounter));
+                        component = new Button(getParameter(line, lineCounter));
+                        break;
                     case "title":
                         //TODO check for multiple titles
-                        return new Title(getParameter(line, lineCounter));
+                        component = new Title(getParameter(line, lineCounter));
+                        break;
                     case "spacer":
-                        return new Spacer(getParameter(line,lineCounter));
+                        component = new Spacer(getParameter(line,lineCounter));
+                        break;
                     default:
                         ThrowError($"Unrecognized component on line {lineCounter}");
                         return null;
                 }
             }
+
+            //Adding id
+            if (hasId) {
+                component.uid = uid;
+            }
+            return component;
         }
 
         //Extracts the string from inside of
