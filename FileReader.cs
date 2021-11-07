@@ -190,7 +190,7 @@ namespace BreadEngine {
                 hasId = HashIndex != -1 && HashIndex < OpeningBracketIndex;
                 if (hasId)
                     uid = line.Substring(HashIndex+1, OpeningBracketIndex - HashIndex-1);
-                string componentname = line.ToLower().Trim().Substring(0, OpeningBracketIndex - ((hasId)?HashIndex-1:0));
+                string componentname = line.ToLower().Trim().Substring(0, (hasId) ? HashIndex : OpeningBracketIndex/* - ((hasId)?HashIndex-1:0)*/);
                 switch (componentname) {
                     case "text":
                         component = new Text(getParameter(line, lineCounter));

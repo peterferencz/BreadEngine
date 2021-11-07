@@ -19,7 +19,12 @@ namespace BreadEngine {
         public string uid = null;
 
         public virtual char[] Draw(int width){
-            return new char[width];
+            string str = ToString();
+            char[] toReturn = new char[str.Length];
+            for (int i = 0; i < str.Length; i++) {
+                toReturn[i] = str[i];
+            }
+            return toReturn;
         }
 
         public virtual ComponentNavigationAction OnKey(ConsoleKeyInfo keyInfo){
