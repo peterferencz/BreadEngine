@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 namespace BreadEngine {
-    public class UIManager {
+    public abstract class UIManager {
         
         // !IMPORTANT!
         // Due to file reading from top to bottom
@@ -12,7 +12,7 @@ namespace BreadEngine {
         // so top is actually y-1
 
 
-        //True for passtrough
+        /// <returns>weather to pass trough the event</returns>
         public delegate bool KeyCallBack();
 
 
@@ -31,7 +31,8 @@ namespace BreadEngine {
             return panels[identifier];
         }
 
-        public static Component GetComponent(string uid){ //TODO check for null
+        public static Component GetComponent(string uid){
+            if(string.IsNullOrEmpty(uid)) { return null; }
             foreach (KeyValuePair<char,Panel> panel in panels) {
                 Component _toReturn = panel.Value.GetComponent(uid);
                 if (_toReturn != null) {
@@ -41,10 +42,16 @@ namespace BreadEngine {
             return null;
         }
 
-        public static void SetUI(ReadReturn data){
+        /// <summary>
+        /// Sets the active working layout
+        /// </summary>
+        /// <param name="data">The data read by LayoutReader</param>
+        public static void setLayout(LayoutData data){
             matrix = data.matrix;
             identifiers = data.identifiers;
             navigation = data.naviagation;
+            panels.Clear();
+            selectedIndex = 0;
 
             //Filling up panels
             foreach (KeyValuePair<char, ArrayList> identifier in identifiers) {
@@ -76,7 +83,7 @@ namespace BreadEngine {
             }
 
             //Set the first element
-            panels[(char)navigation[0]].selectedIndex = 0;
+            panels[(char)navigation[0]].selectedIndex = (int)panels[(char) navigation[0]].interactableComponents[0];
             while (true) {
                 FastConsole.Clear();
                 foreach (KeyValuePair<char, Panel> panel in panels) {
@@ -87,30 +94,34 @@ namespace BreadEngine {
                 ConsoleKeyInfo keyInfo = FastConsole.ReadKey();
                 ConsoleKey key = keyInfo.Key;
 
-                //PassTrough
+                //call universal keybinds
                 if (universalKeyCodes.ContainsKey(key)) {
                     bool passTrough = universalKeyCodes[key].Invoke();
                     if (!passTrough) {
-                        continue;
+                        continue; //INFO if passtrough is true, more events can be rased by the same keybind
                     }
                 }
 
-                //Sending it down to components
+                //Sending onkey down to components
                 switch (panels[(char)navigation[selectedIndex]].OnKey(keyInfo)) {
                     case PanelNavigationAction.Stay:
                         //Do nothing
                         break;
                     case PanelNavigationAction.NextPanel:
-                        if(++selectedIndex >= navigation.Count){
-                            selectedIndex = 0;
-                        }
-                        panels[(char)navigation[selectedIndex]].selectedIndex = 0;
+                        do {
+                            if(++selectedIndex >= navigation.Count) {
+                                selectedIndex = 0;
+                            }
+                        } while(panels[(char) navigation[selectedIndex]].interactableComponents.Count == 0);
+                        panels[(char)navigation[selectedIndex]].selectedIndex = (int)(panels[(char) navigation[selectedIndex]].interactableComponents[0]);
                         break;
                     case PanelNavigationAction.PreviousPanel:
-                        if(--selectedIndex <= -1){
-                            selectedIndex = navigation.Count-1;
-                        }
-                        panels[(char)navigation[selectedIndex]].selectedIndex = panels[(char)navigation[selectedIndex]].components.Count-1;
+                        do {
+                            if(--selectedIndex <= -1) {
+                                selectedIndex = navigation.Count - 1;
+                            }
+                        } while(panels[(char) navigation[selectedIndex]].interactableComponents.Count == 0);
+                        panels[(char)navigation[selectedIndex]].selectedIndex = (int)panels[(char)navigation[selectedIndex]].interactableComponents[ panels[(char) navigation[selectedIndex]].interactableComponents.Count - 1 ];
                         break;
                     default:
                         break;

@@ -17,6 +17,7 @@ namespace BreadEngine {
         public ConsoleColor background = ConsoleColor.Black;
 
         public string uid = null;
+        public bool interactable = false;
 
         public virtual char[] Draw(int width){
             string str = ToString();
@@ -39,20 +40,21 @@ namespace BreadEngine {
 
         public override string ToString() {
             if (uid != null) {
-                return $"{this.GetType().Name.ToUpper()}({uid})";
+                return $"{GetType().Name.ToUpper()}({uid})";
             }else{
-                return this.GetType().Name.ToUpper();
+                return GetType().Name.ToUpper();
             }
         }
     }
 
-    public class Text : Component {
+    public class Text : Component { //TODO text wrapping
         public string text;
 
         public Text(string text) {
             this.text = text;
             foreground = ConsoleColor.White;
             background = ConsoleColor.Black;
+            interactable = false;
         }
 
         public override char[] Draw(int width){
@@ -71,6 +73,7 @@ namespace BreadEngine {
             this.text = text;
             foreground = ConsoleColor.White;
             background = ConsoleColor.Black;
+            interactable = false;
         }
         
         public override char[] Draw(int width){
@@ -97,6 +100,7 @@ namespace BreadEngine {
 
         public Spacer(string spaceWith = " ") {
             spacer = spaceWith;
+            interactable = false;
         }
 
         public override char[] Draw(int width) {
@@ -117,6 +121,7 @@ namespace BreadEngine {
         public Button(string text) {
             this.text = text;
             foreground = ConsoleColor.Green;
+            interactable = true;
         }
 
         public void SetCallback(ButtonCallback callback){
@@ -142,7 +147,6 @@ namespace BreadEngine {
     }
 
 
-    //TODO a loader that writes it's value next to it
     public class Slider : Component {
         public string text;
         public int percent = 90;
@@ -150,6 +154,7 @@ namespace BreadEngine {
         public Slider(){
             text = "LoadBarWithText";
             foreground = ConsoleColor.Cyan;
+            interactable = true;
         }
 
         public override char[] Draw(int width) {
@@ -209,6 +214,7 @@ namespace BreadEngine {
 
         public LoadBar(){
             foreground = ConsoleColor.Blue;
+            interactable = false;
         }
 
         public override char[] Draw(int width) {
@@ -232,6 +238,10 @@ namespace BreadEngine {
 public class TextBox : Component {
         
         public string text = "";
+
+        public TextBox() {
+            interactable = true;
+        }
 
         public override char[] Draw(int width){
             char[] toReturn = new char[text.Length];

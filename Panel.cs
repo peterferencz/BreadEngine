@@ -12,12 +12,17 @@ namespace BreadEngine {
     public class Panel {
         public ArrayList cells = new ArrayList();
         public ArrayList components = new ArrayList();
+        public ArrayList interactableComponents = new ArrayList();
         private ArrayList cellsVerticalMatrix = new ArrayList();
         public ConsoleColor borderColor = ConsoleColor.White;
 
         public int selectedIndex = -1;
 
         private int panelCount;
+        private bool hasTitle = false;
+        private string titlestring = "";
+        private Component title = null;
+        private int titleIndex = 0;
         public Panel(ArrayList components, int panelCount){
             this.components = components;
             this.panelCount = panelCount;
@@ -25,6 +30,26 @@ namespace BreadEngine {
             //To prevent being empty and throwing errors
             if(components.Count == 0){
                 components.Add(new Spacer());
+            }
+
+            
+
+            //Handling of the title and removing it
+            //from the regular components arraylist
+            foreach(Component component in components) {
+                if(typeof(Title) == component.GetType()) {
+                    hasTitle = true;
+                    title = component;
+                    components.Remove(component);
+                    break;
+                }
+            }
+
+            //Has to come after removing title (+1h dev time)
+            for(int i = 0; i < components.Count; i++) {
+                if(((Component) components[i]).interactable) {
+                    interactableComponents.Add(i);
+                }
             }
         }
 
@@ -39,22 +64,22 @@ namespace BreadEngine {
 
         bool firstDrawCall = true;
         public void Draw(){
-            if(firstDrawCall){
+            if(firstDrawCall) {
                 //Fill the cellsverticalmatrix with empty arrays
-                for (int i = 0; i < /*Count of rows, need outsideinfo*/panelCount; i++) {
+                for(int i = 0; i < /*Count of rows, need outsideinfo*/panelCount; i++) {
                     cellsVerticalMatrix.Add(new ArrayList());
                 }
                 //Add cells to cellsverticalmatrix based on their
                 //matrixY position
-                for (int i = 0; i < cells.Count; i++) {
-                    Cell cell = (Cell)cells[i];
-                    ((ArrayList)cellsVerticalMatrix[cell.matrixY]).Add(cell);
+                for(int i = 0; i < cells.Count; i++) {
+                    Cell cell = (Cell) cells[i];
+                    ((ArrayList) cellsVerticalMatrix[cell.matrixY]).Add(cell);
                 }
                 //remove the elements from the arraylist
                 //with the help of another arrylist
                 ArrayList newArray = new ArrayList();
-                for (int i = 0; i < cellsVerticalMatrix.Count; i++) {
-                    if (((ArrayList)cellsVerticalMatrix[i]).Count != 0) {
+                for(int i = 0; i < cellsVerticalMatrix.Count; i++) {
+                    if(((ArrayList) cellsVerticalMatrix[i]).Count != 0) {
                         newArray.Add(cellsVerticalMatrix[i]);
                     }
                 }
@@ -66,21 +91,8 @@ namespace BreadEngine {
             int ScreenWidth = FastConsole.Width;
             int ScreenHeight = FastConsole.Height;
 
-            //Handling of the title and removing it
-            //from the regular components arraylist
-            bool hasTitle = false;
-            string titlestring = "";
-            Component title = null;
-            int titleIndex = 0;
-            foreach (Component component in components) {
-                if(typeof(Title) == component.GetType()){
-                    hasTitle = true;
-                    title = component;
-                    components.Remove(component);
-                    break;
-                }
-            }
             
+
 
             int objectIndex = 0;
             int textIndex = 0;
@@ -100,6 +112,7 @@ namespace BreadEngine {
                             ConsoleColor foreColor = borderColor;
                             ConsoleColor backColor = ConsoleColor.Black;
 
+                            //TODO customizable borders
                             if (!t && !l && x == 0 && y == 0) {
                                 toWrite = '┌';
                             } else if(!t && !r && x == cell.Width-1 && y == 0) {
@@ -134,7 +147,7 @@ namespace BreadEngine {
                                     toWrite = ' ';
                                 } else {
                                     Component component = (Component)components[objectIndex];
-                                    string objString = new String(component.Draw(cell.Width * currentRow.Count - 2));
+                                    string objString = new(component.Draw(cell.Width * currentRow.Count - 2));
                                     foreColor = component.foreground;
                                     if(selectedIndex == objectIndex){
                                         backColor = ConsoleColor.Red;
@@ -185,22 +198,28 @@ namespace BreadEngine {
                     //Do nothing
                     break;
                 case ComponentNavigationAction.NextComponent:
-                    //Go to next component
-                    if(++selectedIndex >= components.Count){
+                    int i = interactableComponents.IndexOf(selectedIndex);
+                    if(i == interactableComponents.Count - 1) {
                         //Run out of components
                         selectedIndex = -1;
                         return PanelNavigationAction.NextPanel;
+                    } else {
+                        //Go to next component
+                        selectedIndex = (int)interactableComponents[i+1];
                     }
                     break;
                 case ComponentNavigationAction.NextPanel:
                     selectedIndex = -1;
                     return PanelNavigationAction.NextPanel;
                 case ComponentNavigationAction.PreviousComponent:
-                    //Previous component
-                    if(--selectedIndex <= -1){
+                    int x = interactableComponents.IndexOf(selectedIndex);
+                    if(x == 0) {
                         //Out of bounds
                         selectedIndex = -1;
                         return PanelNavigationAction.PreviousPanel;
+                    } else {
+                        //Previous component
+                        selectedIndex = (int)interactableComponents[x - 1];
                     }
                     break;
                 case ComponentNavigationAction.PreviousPanel:

@@ -6,4 +6,8 @@
     <RootNamespace>BreadEngine</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="LayoutReader-Original.cs.txt" />
+  </ItemGroup>
+
 </Project>

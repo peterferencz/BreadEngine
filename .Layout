@@ -15,6 +15,8 @@ SPACER(=)
 TEXT(This is an app created with BreadEngine)
 SPACER(=)
 SPACER
+BUTTON(test button1)
+BUTTON(test button2)
 TEXT(This engine makes it super easy to create terminal ui-s. You Just simply define the layout in the .Layout file)
 BUTTON#test(Start creating awesome apps with BreadEngine)
 
