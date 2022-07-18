@@ -149,12 +149,13 @@ namespace BreadEngine {
 
     public class Slider : Component {
         public string text;
-        public int percent = 90;
+        public int percent;
 
-        public Slider(){
+        public Slider(int percent){
             text = "LoadBarWithText";
             foreground = ConsoleColor.Cyan;
             interactable = true;
+            this.percent = percent;
         }
 
         public override char[] Draw(int width) {
@@ -210,11 +211,12 @@ namespace BreadEngine {
     }
 
     public class LoadBar : Component {
-        public int percent = 90;
+        public int percent;
 
-        public LoadBar(){
+        public LoadBar(int percent){
             foreground = ConsoleColor.Blue;
             interactable = false;
+            this.percent = percent;
         }
 
         public override char[] Draw(int width) {
@@ -243,6 +245,11 @@ public class TextBox : Component {
             interactable = true;
         }
 
+        public TextBox(string text) {
+            interactable = true;
+            this.text = text;
+        }
+
         public override char[] Draw(int width){
             char[] toReturn = new char[text.Length];
             for (int i = 0; i < text.Length; i++) {
@@ -267,7 +274,9 @@ public class TextBox : Component {
                     case ConsoleKey.DownArrow:
                         break;
                     case ConsoleKey.Backspace:
-                        text = text.Substring(0, text.Length-1);
+                        if(text.Length != 0){
+                            text = text.Substring(0, text.Length-1);
+                        }
                         break;
 
                     default:

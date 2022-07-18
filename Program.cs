@@ -5,19 +5,23 @@ class Program {
     static void Main(string[] args) {
         FastConsole.Clear();
 
-        LayoutData scene1 = LayoutReader.Read(@"..\..\..\.Layout");
-        LayoutData scene2 = LayoutReader.Read(@"..\..\..\.Layout");
+        LayoutData scene1 = LayoutReader.Read("./.Layout");
+        LayoutData scene2 = LayoutReader.Read(@"./.Layout2");
         UIManager.setLayout(scene1);
 
         UIManager.addUniversalKeyBind(ConsoleKey.Escape, () => exit());
 
         Button testButton = (Button) UIManager.GetComponent("test");
         testButton.SetCallback(() => {
-            testButton.text = "Hello world!";
+            testButton.text = "Loading...";
+            UIManager.setLayout(scene1);
         });
 
+        Console.CancelKeyPress += delegate {
+            Console.Clear();
+            Console.ResetColor();
+        };
 
-        FastConsole.Flush();
         UIManager.StartLoop();
 
         //Called when we exit the ui loop

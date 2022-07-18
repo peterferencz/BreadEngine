@@ -170,12 +170,6 @@ namespace BreadEngine {
                         //TODO check for multiple titles
                         component = new Title(getParameter(line, lineCounter));
                         break;
-                    case "loader":
-                        component = new LoadBar();
-                        break;
-                    case "slider":
-                        component = new Slider();
-                        break;
                     case "textbox":
                         component = new TextBox();
                         break;
@@ -205,6 +199,15 @@ namespace BreadEngine {
                         break;
                     case "spacer":
                         component = new Spacer(getParameter(line, lineCounter));
+                        break;
+                    case "loader":
+                        component = new LoadBar(Int32.Parse(getParameter(line, lineCounter)));
+                        break;
+                    case "slider":
+                        component = new Slider(Int32.Parse(getParameter(line, lineCounter)));
+                        break;
+                    case "textbox":
+                        component = new TextBox(getParameter(line,lineCounter));
                         break;
                     default:
                         ThrowError("Unrecognized component", lineCounter);
